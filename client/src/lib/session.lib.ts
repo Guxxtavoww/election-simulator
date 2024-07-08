@@ -1,8 +1,9 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { getCookie, removeAllCookies } from '@/server/helpers/cookie.helpers';
+
 import { type UserType, userSchema } from '@/server/actions/auth/auth.types';
+import { getCookie, removeAllCookies } from '@/server/helpers/cookie.helpers';
 
 const cache: {
   data: Maybe<{ access_token: Maybe<string>; user: Maybe<UserType> }>;

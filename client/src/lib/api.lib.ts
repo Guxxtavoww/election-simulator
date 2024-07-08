@@ -10,6 +10,8 @@ const api = axios.create({
 let memmoryAccessToken: Maybe<string> = undefined;
 
 api.interceptors.request.use(async (req) => {
+  console.log({ memmoryAccessToken });
+
   if (memmoryAccessToken) {
     req.headers.Authorization = `Bearer ${memmoryAccessToken}`;
   } else {

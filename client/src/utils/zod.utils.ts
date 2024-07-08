@@ -19,8 +19,8 @@ export function createNullableTransform<
  * -----------------------------------------------------------------------------
  */
 export const numberSchema = z.number().safe('Value is not safe');
-export const stringSchema = z.string().trim();
-export const emailStringSchema = stringSchema.email();
+export const stringSchema = z.string({ required_error: 'Obrigatório' }).trim();
+export const emailStringSchema = stringSchema.email('E-mail Inválido');
 export const urlStringSchema = stringSchema.url();
 export const uuidSchema = stringSchema.uuid();
 export const orderParamSchema = z.enum(['ASC', 'DESC']);
@@ -28,6 +28,11 @@ export const integerNumberSchema = numberSchema.int();
 export const floatNumberSchema = numberSchema.refine((val) => val % 1 !== 0, {
   message: 'Value must be float',
 });
+
+export const cpfStringSchema = stringSchema.regex(
+  /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
+  'CPF Inválido'
+);
 
 export const stringToNumberSchema = stringSchema
   .refine((value) => !Number.isNaN(+value))
@@ -42,16 +47,9 @@ export const booleanStringSchema = z
   .enum(['true', 'false'])
   .transform((value) => value === 'true');
 
-export const phoneNumberStringSchema = stringSchema.refine(
-  (data) => {
-    const phoneNumberRegex =
-      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-
-    return phoneNumberRegex.test(data);
-  },
-  {
-    message: 'Invalid phone number format',
-  }
+export const phoneNumberStringSchema = stringSchema.regex(
+  /^\(\d{2}\) \d{5}-\d{4}$/,
+  'Insira um número válido'
 );
 
 export const timeStringSchema = stringSchema.time({ precision: 3 });
@@ -112,6 +110,8 @@ export const optionalEndDateStringSchema =
 
 export const optionalDateStringSchema =
   createNullableTransform(dateStringSchema);
+
+export const optionalCpfStringSchema = createNullableTransform(cpfStringSchema);
 
 export const optionalBooleanStringSchema =
   createNullableTransform(booleanStringSchema);

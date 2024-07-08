@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { getCookie, removeCookie } from '@/server/helpers/cookie.helpers';
+import { getCookie, removeAllCookies } from '@/server/helpers/cookie.helpers';
 import { type UserType, userSchema } from '@/server/actions/auth/auth.types';
 
 const cache: {
@@ -29,16 +29,14 @@ export async function session<ForceNoUndefined extends boolean = false>(
     getCookie('access_token'),
   ]);
 
-  const userResponse = user
-    ? userSchema.safeParse(JSON.parse(user))
-    : undefined;
+  const userResponse = user ? userSchema.parse(JSON.parse(user)) : undefined;
 
   const baseAuthObject = { access_token };
 
-  const result = userResponse?.success
+  const result = userResponse
     ? {
         ...baseAuthObject,
-        user: userResponse.data,
+        user: userResponse,
       }
     : {
         ...baseAuthObject,
@@ -52,7 +50,7 @@ export async function session<ForceNoUndefined extends boolean = false>(
 }
 
 export async function logOut() {
-  await Promise.all([removeCookie('user'), removeCookie('access_token')]);
+  await removeAllCookies();
 
   redirect('/auth/login');
 }

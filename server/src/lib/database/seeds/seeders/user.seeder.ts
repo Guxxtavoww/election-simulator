@@ -18,8 +18,8 @@ export default class UserSeeder implements Seeder {
       user_name: 'admin',
       user_email: 'user@example.com',
       hashed_password: await createHashedPassword('password123'),
-      user_cpf_number: '123.456.789-00',
-      phone_number: '+919367788755',
+      user_cpf_number: '503.493.138-90',
+      phone_number: '(11) 98945-9239',
     });
 
     await userRepository.save(newUser);

@@ -3,17 +3,21 @@ import { z } from 'zod';
 import {
   uuidSchema,
   stringSchema,
+  cpfStringSchema,
   emailStringSchema,
-  optionalStringSchema,
+  datetimeStringSchema,
+  optionalDatetimeStringSchema,
+  optionalPhoneNumberStringSchema,
 } from '@/utils/zod.utils';
 
 export const userSchema = z.object({
   id: uuidSchema,
   user_name: stringSchema,
   user_email: emailStringSchema,
-  is_email_verified: z.boolean(),
-  created_at: stringSchema,
-  updated_at: optionalStringSchema,
+  user_cpf_number: cpfStringSchema,
+  created_at: datetimeStringSchema,
+  updated_at: optionalDatetimeStringSchema,
+  phone_number: optionalPhoneNumberStringSchema,
 });
 
 export const loginAndRegisterResponseSchema = z.object({

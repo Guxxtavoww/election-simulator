@@ -1,34 +1,37 @@
 'use client';
 
+import { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { cn } from '@/utils/cn.util';
 import { useFieldId } from '@/hooks/use-field-id.hook';
 import { Input, type InputProps } from '@/components/ui/input';
-import { PasswordInput } from '@/components/ui/password-input';
 import { FormField, FormLabel, FormMessage } from '@/components/ui/form';
-import { cn } from '@/utils/cn.util';
 
-export type InputFieldProps = Omit<
+export type InputFieldWithMaskProps = Omit<
   InputProps,
-  'name' | 'defaultChecked' | 'id' | 'checked' | 'defaultChecked'
+  'name' | 'defaultChecked' | 'id' | 'type' | 'checked' | 'defaultChecked'
 > & {
   name: string;
   label?: string;
   isRequired?: boolean;
+  maskFn: (value: string) => string | undefined;
 };
 
-export function InputField({
+export function InputFieldWithMask({
   name,
-  type = 'text',
   className,
   defaultValue = '',
   label,
   disabled,
+  maskFn,
   isRequired,
   ...rest
-}: InputFieldProps): JSX.Element {
+}: InputFieldWithMaskProps): JSX.Element {
   const id = useFieldId(name);
   const { control } = useFormContext();
+
+  const applyMask = useCallback((value: string) => maskFn(value), [maskFn]);
 
   return (
     <FormField
@@ -50,31 +53,24 @@ export function InputField({
               ) : null}
             </FormLabel>
           )}
-          {type === 'password' ? (
-            <PasswordInput
-              {...rest}
-              {...field}
-              value={value}
-              className={className}
-              onChange={onChange}
-              id={id}
-              autoComplete={`current-${name}`}
-            />
-          ) : (
-            <Input
-              {...rest}
-              {...field}
-              value={value}
-              className={className}
-              onChange={(e) => {
-                const inputValue = e.target.value;
-                onChange(type === 'number' ? +inputValue : inputValue);
-              }}
-              type={type}
-              id={id}
-              autoComplete={`current-${name}`}
-            />
-          )}
+          <Input
+            {...rest}
+            {...field}
+            value={value}
+            className={className}
+            onChange={(e) => {
+              const inputValue = e.target.value;
+
+              const maskedValue = applyMask(inputValue);
+
+              if (!maskedValue && inputValue.length) return;
+
+              onChange(maskedValue);
+            }}
+            type="text"
+            id={id}
+            autoComplete={`current-${name}`}
+          />
           <FormMessage />
         </div>
       )}

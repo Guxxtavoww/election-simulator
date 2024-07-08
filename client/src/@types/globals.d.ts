@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { EnvType } from '@/config/env.config';
+import type { ENV } from '@/config/env.config';
 
 declare global {
   export type WithChildren<T extends Record<string, any> = {}> = T &
@@ -43,6 +43,6 @@ declare global {
   }
 
   namespace NodeJS {
-    interface ProcessEnv extends EnvType {}
+    interface ProcessEnv extends ENV {}
   }
 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { HydrationOverlay } from '@builder.io/react-hydration-overlay';
 
+import { parseEnv } from '@/config/env.config';
 import { Toaster } from '@/components/ui/toaster';
 import { TanstackProvider } from '@/providers/tanstack-provider';
 
@@ -15,6 +16,8 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: WithChildren) {
+  await parseEnv();
+
   return (
     <html lang="en">
       <body className={inter.className}>

@@ -9,7 +9,8 @@ import {
 import { useMemo, useRef, type ReactNode } from 'react';
 
 import { ToastAction } from '@/components/ui/toast';
-import { useToast } from '@/components/ui/use-toast';
+
+import { useToast } from './use-toast.hook';
 
 export type UseMutationWithToastOptions<
   TData = unknown,

@@ -21,7 +21,7 @@ export class User extends Base {
 
   @Index()
   @Column('varchar', { unique: true, nullable: true })
-  phone_number: string;
+  phone_number: NullableValue<string>;
 
   @Index()
   @Column('varchar', { unique: true })

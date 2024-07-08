@@ -2,6 +2,8 @@ import { z } from 'nestjs-zod/z';
 
 import { createNullableTransform } from 'src/utils/create-nullable-transform.util';
 
+import { phoneNumberRegex } from './regex.shared';
+
 /**
  * -----------------------------------------------------------------------------
  * Default Schemas
@@ -36,17 +38,7 @@ export const cpfStringSchema = stringSchema.regex(
   /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
 );
 
-export const phoneNumberStringSchema = stringSchema.refine(
-  (data) => {
-    const phoneNumberRegex =
-      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-
-    return phoneNumberRegex.test(data);
-  },
-  {
-    message: 'Invalid phone number format',
-  },
-);
+export const phoneNumberStringSchema = stringSchema.regex(phoneNumberRegex);
 
 export const timeStringSchema = stringSchema.time({ precision: 3 });
 

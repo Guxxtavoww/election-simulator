@@ -6,7 +6,9 @@ import { optionalStringSchema } from 'src/shared/schemas.shared';
 import { createPaginationSchema } from 'src/utils/create-pagination-schema.util';
 
 export const paginateUsersSchema = createPaginationSchema({
-  user_name: optionalStringSchema,
+  user_name: optionalStringSchema.transform((name) =>
+    name?.toLocaleLowerCase(),
+  ),
 });
 
 export type PaginateUsersPayload = z.infer<typeof paginateUsersSchema>;

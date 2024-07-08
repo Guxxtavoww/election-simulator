@@ -30,6 +30,7 @@ export class Users1719274509300 implements MigrationInterface {
           {
             name: 'user_cpf_number',
             type: 'varchar',
+            isUnique: true
           },
         ],
       }),

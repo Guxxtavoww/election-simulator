@@ -4,7 +4,6 @@ import { PaginationService } from 'src/lib/pagination/pagination.service';
 import { NotFoundError } from 'src/lib/http-exceptions/errors/types/not-found-error';
 
 import { User } from '../entities/user.entity';
-import { UserTypeEnum } from '../enums/user-type.enum';
 import { userRepository } from '../repositories/user.repository';
 import type { CreateUserPayload } from '../dtos/create-user.dto';
 import type { UpdateUserPayload } from '../dtos/update-user.dto';
@@ -21,9 +20,8 @@ export class UserService {
       'user.updated_at',
       'user.user_name',
       'user.user_email',
-      'user.user_type',
-      'user.is_email_verified',
-      'user.user_auth_provider',
+      'user.phone_number',
+      'user.user_cpf_number',
     ];
 
     const baseQueryBuilder = userRepository
@@ -43,24 +41,13 @@ export class UserService {
     order_by_created_at,
     order_by_updated_at,
     user_name,
-    user_type,
-    user_auth_provider,
   }: PaginateUsersPayload) {
-    const queryBuilder = this.createUserQueryBuilder()
-      .where(user_name ? 'user.user_name LIKE :user_name' : '1=1', {
+    const queryBuilder = this.createUserQueryBuilder().where(
+      user_name ? 'LOWER(user.user_name) LIKE :user_name' : '1=1',
+      {
         user_name: `%${user_name}%`,
-      })
-      .andWhere(user_type ? 'user.user_type = :user_type' : '1=1', {
-        user_type,
-      })
-      .andWhere(
-        user_auth_provider
-          ? 'user.user_auth_provider = :user_auth_provider'
-          : '1=1',
-        {
-          user_auth_provider,
-        },
-      );
+      },
+    );
 
     if (order_by_created_at)
       queryBuilder.orderBy('user.created_at', order_by_created_at);
@@ -98,19 +85,6 @@ export class UserService {
     return user;
   }
 
-  public async markEmailAsConfirmed(
-    user_email: string,
-    logged_in_user_id: string,
-  ) {
-    const userToUpdate = await this.getUserByEmail(user_email, false);
-
-    if (userToUpdate.id !== logged_in_user_id) throw new ForbiddenException();
-
-    if (userToUpdate.is_email_verified) return;
-
-    return userRepository.update(userToUpdate.id, { is_email_verified: true });
-  }
-
   async createUser(payload: CreateUserPayload) {
     const userToCreate = await User.create(payload);
 
@@ -125,10 +99,6 @@ export class UserService {
     const userToUpdate = await this.getUserById(id, true);
 
     this.checkUserPermission(userToUpdate.id, logged_in_user_id);
-
-    if (payload.user_type && userToUpdate.user_type === UserTypeEnum.TEACHER) {
-      throw new ForbiddenException('Once a teacher always a teacher')
-    }
 
     const userItem = await User.update(payload, userToUpdate.hashed_password);
 

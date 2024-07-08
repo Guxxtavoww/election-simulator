@@ -15,7 +15,6 @@ import { DecodedToken } from 'src/shared/decorators/decoded-token.decorator';
 import { ApiPaginationQuery } from 'src/shared/decorators/api-pagination-query.decorator';
 import { DataBaseInterceptorDecorator } from 'src/shared/decorators/database-interceptor.decorator';
 
-import { users_types } from '../enums/user-type.enum';
 import { UserService } from '../services/user.service';
 import { CreateUserDTO } from '../dtos/create-user.dto';
 import { UpdateUserDTO } from '../dtos/update-user.dto';
@@ -31,12 +30,6 @@ export class UserController {
   @Get('paginate')
   async paginate(@Query() querys: PaginateUsersDTO) {
     return this.userService.paginateUsers(querys);
-  }
-
-  @Public()
-  @Get('user-types')
-  getUserTypes() {
-    return users_types;
   }
 
   @Public()

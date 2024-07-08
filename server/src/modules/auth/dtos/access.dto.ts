@@ -19,6 +19,9 @@ export class UserDTO {
   @ApiProperty({ description: 'The phone number of the user', nullable: true })
   phone_number: NullableValue<string>;
 
+  @ApiProperty()
+  user_cpf_number: string;
+
   // @ApiProperty({
   //   description: 'Total Friends count',
   // })

@@ -5,8 +5,6 @@ import {
   stringSchema,
   optionalStringSchema,
   optionalStringToNumberSchema,
-  emailStringSchema,
-  optionalUrlStringSchema,
 } from 'src/shared/schemas.shared';
 
 export const envSchema = z.object({
@@ -20,11 +18,6 @@ export const envSchema = z.object({
   PORT: optionalStringToNumberSchema.default('5000'),
   WEBSOCKET_PORT: optionalStringToNumberSchema.default('80'),
   ENV: z.enum(['prod', 'dev']).default('dev'),
-  RESEND_API_KEY: stringSchema,
-  EMAIL_FROM: emailStringSchema,
-  EMAIL_CONFIRMATION_URL: optionalUrlStringSchema.default(
-    'https://teachers-gate-frontend.vercel.app/account/confirm-email',
-  ),
 });
 
 export type EnvType = z.infer<typeof envSchema>;

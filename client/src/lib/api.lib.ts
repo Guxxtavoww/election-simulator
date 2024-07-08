@@ -1,5 +1,4 @@
 import axios, { AxiosError } from 'axios';
-import { redirect } from 'next/navigation';
 
 import { logOut, session } from './session.lib';
 
@@ -7,11 +6,11 @@ const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
 });
 
-let memmoryAccessToken: Maybe<string> = undefined;
+let memoryAccessToken: Maybe<string> = undefined;
 
 api.interceptors.request.use(async (req) => {
-  if (memmoryAccessToken) {
-    req.headers.Authorization = `Bearer ${memmoryAccessToken}`;
+  if (memoryAccessToken) {
+    req.headers.Authorization = `Bearer ${memoryAccessToken}`;
   } else {
     const my_session = await session();
 
@@ -19,7 +18,7 @@ api.interceptors.request.use(async (req) => {
 
     if (access_token) {
       req.headers.Authorization = `Bearer ${access_token}`;
-      memmoryAccessToken = access_token;
+      memoryAccessToken = access_token;
     }
   }
 
@@ -29,12 +28,10 @@ api.interceptors.request.use(async (req) => {
 api.interceptors.response.use(
   (res) => res,
   async (err: AxiosError) => {
-    if (err.status === 401) {
-      memmoryAccessToken = undefined;
+    if (err.response?.status === 401) {
+      memoryAccessToken = undefined;
 
-      await logOut();
-
-      redirect('/auth/login');
+      return await logOut();
     }
 
     const message = String((err.response?.data as any)?.message || 'Error');

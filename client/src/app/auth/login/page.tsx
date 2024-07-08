@@ -12,7 +12,7 @@ export default async function LoginPage() {
       <div className="w-full flex justify-end">
         <Link
           href="/auth/register"
-          className="text-purple-600 font-medium text-sm"
+          className="text-slate-950 font-medium text-sm"
         >
           Não tem uma conta? Clique aqui
         </Link>

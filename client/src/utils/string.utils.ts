@@ -14,16 +14,6 @@ export function capitalize(string: string) {
   return mappedText.join(' ');
 }
 
-export function getUserName(user_name: string) {
-  const words = user_name.split(' ').map((word, index) => {
-    if (index > 2) return;
-
-    return word[0]?.toLocaleUpperCase();
-  });
-
-  return words.join('');
-}
-
 export function limitChars(str: string, limit = 100) {
   if (str.length < limit) return str;
 

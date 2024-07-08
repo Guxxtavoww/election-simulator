@@ -14,17 +14,16 @@ import {
   type LoginAndRegisterResponsePayload,
 } from './auth.types';
 
-export async function register({
-  confirmed_password,
-  ...restPayload
-}: RegisterPayload) {
+export async function register(
+  payload: Omit<RegisterPayload, 'confirmed_password'>
+) {
   try {
     const { access_token, user } =
       await validateApiCall<LoginAndRegisterResponsePayload>({
         endpoint: '/auth/register',
         // @ts-ignore
         zodSchema: loginAndRegisterResponseSchema,
-        body: restPayload,
+        body: payload,
         method: 'POST',
       });
 

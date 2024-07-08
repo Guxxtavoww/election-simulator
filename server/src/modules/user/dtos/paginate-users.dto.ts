@@ -3,7 +3,7 @@ import { createZodDto } from 'nestjs-zod';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { optionalStringSchema } from 'src/shared/schemas.shared';
-import { createPaginationSchema } from 'src/utils/create-pagination-schema.util';
+import { createPaginationSchema } from 'src/utils/create-pagination-schema.utils';
 
 export const paginateUsersSchema = createPaginationSchema({
   user_name: optionalStringSchema.transform((name) =>

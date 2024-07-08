@@ -16,3 +16,15 @@ export function createPaginationSchema<T extends ZodRawShape>(fields: T) {
 
   return paginationSchema;
 }
+
+export function createPaginationSchemaWithoutOrderBy<T extends ZodRawShape>(
+  fields: T,
+) {
+  const paginationSchema = z.object({
+    page: optionalPaginationParamSchema.default(1),
+    limit: optionalPaginationParamSchema.default(10),
+    ...fields,
+  });
+
+  return paginationSchema;
+}

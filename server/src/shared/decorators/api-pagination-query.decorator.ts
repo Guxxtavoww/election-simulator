@@ -4,7 +4,10 @@ import { OrderByEnum } from '../enums.shared';
 
 export type Params = ApiQueryOptions[];
 
-export function ApiPaginationQuery(params?: Params): MethodDecorator {
+export function ApiPaginationQuery(
+  params?: Params,
+  hideOrderBy = false,
+): MethodDecorator {
   return (target, key, descriptor) => {
     ApiQuery({
       type: 'number',
@@ -23,21 +26,23 @@ export function ApiPaginationQuery(params?: Params): MethodDecorator {
       example: 1,
     })(target, key, descriptor);
 
-    ApiQuery({
-      type: 'enum',
-      description: 'Order By Created At',
-      required: false,
-      name: 'order_by_created_at',
-      enum: OrderByEnum,
-    })(target, key, descriptor);
+    if (!hideOrderBy) {
+      ApiQuery({
+        type: 'enum',
+        description: 'Order By Created At',
+        required: false,
+        name: 'order_by_created_at',
+        enum: OrderByEnum,
+      })(target, key, descriptor);
 
-    ApiQuery({
-      type: 'enum',
-      description: 'Order By Updated At',
-      required: false,
-      name: 'order_by_updated_at',
-      enum: OrderByEnum,
-    })(target, key, descriptor);
+      ApiQuery({
+        type: 'enum',
+        description: 'Order By Updated At',
+        required: false,
+        name: 'order_by_updated_at',
+        enum: OrderByEnum,
+      })(target, key, descriptor);
+    }
 
     if (!params || !params.length) return;
 

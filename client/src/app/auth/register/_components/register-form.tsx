@@ -21,7 +21,8 @@ import {
 export function RegisterForm() {
   const { mutateAsync, isPending } = useMutationWithToast({
     mutationKey: ['login'],
-    mutationFn: async (data: RegisterPayload) => register(data),
+    mutationFn: async ({ confirmed_password, ...rest }: RegisterPayload) =>
+      register(rest),
     toastCustomError: 'Email already exists',
   });
 
@@ -53,13 +54,13 @@ export function RegisterForm() {
           name="user_email"
           type="email"
           label="E-mail"
-          placeholder="Insert seu e-mail"
+          placeholder="Insira seu e-mail"
           isRequired
         />
         <InputFieldWithMask
           name="user_cpf_number"
           label="CPF"
-          placeholder="Insira seu cpf"
+          placeholder="Insira seu CPF"
           maskFn={cpfNumberMask}
           isRequired
         />

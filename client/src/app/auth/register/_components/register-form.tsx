@@ -14,8 +14,8 @@ import { useMutationWithToast } from '@/hooks/use-mutation-with-toast.hook';
 import { InputFieldWithMask } from '@/components/tools/fields/input-field-with-mask';
 
 import {
-  type RegisterPayload,
   registerSchema,
+  type RegisterPayload,
 } from '../_schemas/register.schema';
 
 export function RegisterForm() {
@@ -73,8 +73,8 @@ export function RegisterForm() {
         <InputField
           name="password"
           type="password"
-          label="Your Password"
-          placeholder="Insert your password"
+          label="Senha"
+          placeholder="Insira sua senha"
           isRequired
         />
         <InputField

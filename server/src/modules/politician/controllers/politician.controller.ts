@@ -11,6 +11,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { UuidParam } from 'src/shared/decorators/uuid-param.decorator';
 import { ApiPaginationQuery } from 'src/shared/decorators/api-pagination-query.decorator';
+import { DataBaseInterceptorDecorator } from 'src/shared/decorators/database-interceptor.decorator';
 
 import { PoliticianService } from '../services/politician.service';
 import { CreatePoliticianDTO } from '../dtos/create-politician.dto';
@@ -34,11 +35,13 @@ export class PoliticianController {
   }
 
   @Post()
+  @DataBaseInterceptorDecorator()
   create(@Body() payload: CreatePoliticianDTO) {
     return this.politicianService.createPolitician(payload);
   }
 
   @Put(':id')
+  @DataBaseInterceptorDecorator()
   update(@UuidParam('id') id: string, @Body() payload: UpdatePoliticianDTO) {
     return this.politicianService.updatePolitician(id, payload);
   }

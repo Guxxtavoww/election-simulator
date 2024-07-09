@@ -50,12 +50,6 @@ export const dateStringSchema = stringSchema
   .date()
   .transform((value) => new Date(value));
 
-export const endDateStringSchema = dateStringSchema.transform((endDate) => {
-  endDate.setDate(endDate.getDate() + 1);
-
-  return endDate;
-});
-
 /**
  * -----------------------------------------------------------------------------
  * Optional Schemas
@@ -70,6 +64,10 @@ export const optionalCpfStringSchema = createNullableTransform(cpfStringSchema);
 
 export const optionalStringToNumberSchema =
   createNullableTransform(stringToNumberSchema);
+
+export const optionalStringSchemaToLowerCase = optionalStringSchema.transform(
+  (val) => val?.toLocaleLowerCase(),
+);
 
 export const optionalPhoneNumberStringSchema = createNullableTransform(
   phoneNumberStringSchema,
@@ -94,9 +92,6 @@ export const optionalTimeStringSchema =
 
 export const optionalDatetimeStringSchema =
   createNullableTransform(datetimeStringSchema);
-
-export const optionalEndDateStringSchema =
-  createNullableTransform(endDateStringSchema);
 
 export const optionalDateStringSchema =
   createNullableTransform(dateStringSchema);

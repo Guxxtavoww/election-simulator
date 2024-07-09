@@ -12,9 +12,7 @@ api.interceptors.request.use(async (req) => {
   if (memoryAccessToken) {
     req.headers.Authorization = `Bearer ${memoryAccessToken}`;
   } else {
-    const my_session = await session();
-
-    const access_token = my_session.access_token;
+    const { access_token } = await session();
 
     if (access_token) {
       req.headers.Authorization = `Bearer ${access_token}`;

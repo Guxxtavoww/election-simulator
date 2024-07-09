@@ -4,7 +4,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import {
   optionalOrderParamSchema,
-  optionalStringSchema,
+  optionalStringSchemaToLowerCase,
 } from 'src/shared/schemas.shared';
 import { OrderByEnum } from 'src/shared/enums.shared';
 import { createPaginationSchemaWithoutOrderBy } from 'src/utils/create-pagination-schema.utils';
@@ -15,9 +15,7 @@ import {
 } from '../enums/politician-political-ideology.enum';
 
 export const paginatePoliticiansSchema = createPaginationSchemaWithoutOrderBy({
-  politician_name: optionalStringSchema.transform((name) =>
-    name?.toLocaleLowerCase(),
-  ),
+  politician_name: optionalStringSchemaToLowerCase,
   political_ideology: optionalIdeologySchema,
   order_by_date_of_birth: optionalOrderParamSchema,
 });

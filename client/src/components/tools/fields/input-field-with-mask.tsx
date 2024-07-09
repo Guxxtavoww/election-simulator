@@ -31,7 +31,16 @@ export function InputFieldWithMask({
   const id = useFieldId(name);
   const { control } = useFormContext();
 
-  const applyMask = useCallback((value: string) => maskFn(value), [maskFn]);
+  const applyMask = useCallback(
+    (value: string) => {
+      const maskedValue = maskFn(value);
+
+      if (!maskedValue && value.length) return;
+
+      return maskedValue;
+    },
+    [maskFn]
+  );
 
   return (
     <FormField
@@ -63,9 +72,7 @@ export function InputFieldWithMask({
 
               const maskedValue = applyMask(inputValue);
 
-              if (!maskedValue && inputValue.length) return;
-
-              onChange(maskedValue);
+              return onChange(maskedValue);
             }}
             type="text"
             id={id}

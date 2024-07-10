@@ -27,6 +27,7 @@ export class PoliticianService {
     political_ideology,
     politician_name,
     order_by_most_votes,
+    politician_type,
   }: PaginatePoliticiansType) {
     const queryBuilder = this.createPoliticianQueryBuilder()
       .where(
@@ -42,6 +43,12 @@ export class PoliticianService {
         {
           politician_name: `%${politician_name}%`,
         },
+      )
+      .andWhere(
+        politician_type
+          ? 'politician.politician_type = :politician_type'
+          : '1=1',
+        { politician_type },
       );
 
     if (order_by_date_of_birth)

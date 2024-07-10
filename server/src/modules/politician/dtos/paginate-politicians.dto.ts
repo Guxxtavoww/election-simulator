@@ -13,12 +13,17 @@ import {
   optionalIdeologySchema,
   PoliticianPoliticalIdeology,
 } from '../enums/politician-political-ideology.enum';
+import {
+  PoliticianType,
+  optionalPoliticianTypeSchema,
+} from '../enums/politician-type.enum';
 
 export const paginatePoliticiansSchema = createPaginationSchemaWithoutOrderBy({
   politician_name: optionalStringSchemaToLowerCase,
   political_ideology: optionalIdeologySchema,
   order_by_date_of_birth: optionalOrderParamSchema,
   order_by_most_votes: optionalOrderParamSchema,
+  politician_type: optionalPoliticianTypeSchema,
 });
 
 export type PaginatePoliticiansType = z.infer<typeof paginatePoliticiansSchema>;
@@ -39,6 +44,12 @@ export class PaginatePoliticiansDTO extends createZodDto(
     example: PoliticianPoliticalIdeology.RIGHT,
   })
   political_ideology?: PoliticianPoliticalIdeology;
+
+  @ApiPropertyOptional({
+    type: 'enum',
+    enum: PoliticianType,
+  })
+  politician_type?: PoliticianType;
 
   @ApiPropertyOptional({
     type: 'enum',

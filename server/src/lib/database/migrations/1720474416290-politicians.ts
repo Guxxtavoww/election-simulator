@@ -1,5 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
+import { politicianTypes } from 'src/modules/politician/enums/politician-type.enum';
 import { political_ideologies } from 'src/modules/politician/enums/politician-political-ideology.enum';
 
 import { baseColumns } from '../entities/base-columns';
@@ -31,6 +32,11 @@ export class Politicians1720474416290 implements MigrationInterface {
             enum: political_ideologies,
           },
           {
+            name: 'politician_type',
+            type: 'enum',
+            enum: politicianTypes,
+          },
+          {
             name: 'date_of_birth',
             type: 'date',
             isNullable: true,
@@ -60,11 +66,20 @@ export class Politicians1720474416290 implements MigrationInterface {
         columnNames: ['political_ideology'],
       }),
     );
+
+    await queryRunner.createIndex(
+      'politicians',
+      new TableIndex({
+        name: 'IDX_POLITICIAN_TYPE',
+        columnNames: ['politician_type'],
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropIndex('politicians', 'IDX_POLITICAL_IDEOLOGY');
     await queryRunner.dropIndex('politicians', 'IDX_POLITICIAN_NAME');
+    await queryRunner.dropIndex('politicians', 'IDX_POLITICIAN_TYPE');
     await queryRunner.dropTable('politicians');
   }
 }

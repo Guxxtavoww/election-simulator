@@ -13,6 +13,10 @@ import {
   politicalIdeologySchema,
   PoliticianPoliticalIdeology,
 } from '../enums/politician-political-ideology.enum';
+import {
+  PoliticianType,
+  politicianTypeSchema,
+} from '../enums/politician-type.enum';
 
 export const createPoliticianSchema = z.object({
   politician_name: stringSchema,
@@ -20,6 +24,7 @@ export const createPoliticianSchema = z.object({
   corruption_scandals_amount: optionalIntegerNumberSchema,
   political_ideology: politicalIdeologySchema,
   date_of_birth: dateStringSchema,
+  politician_type: politicianTypeSchema,
 });
 
 export type CreatePoliticianPayload = z.infer<typeof createPoliticianSchema>;
@@ -45,6 +50,13 @@ export class CreatePoliticianDTO extends createZodDto(createPoliticianSchema) {
     example: PoliticianPoliticalIdeology.RIGHT,
   })
   political_ideology: PoliticianPoliticalIdeology;
+
+  @ApiProperty({
+    type: 'enum',
+    enum: PoliticianType,
+    example: PoliticianType.CONGRESSPERSON,
+  })
+  politician_type: PoliticianType;
 
   @ApiPropertyOptional({
     description: 'Number of corruption scandals the politician is involved in',

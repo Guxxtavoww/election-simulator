@@ -5,6 +5,8 @@ export const swaggerConfig = new DocumentBuilder()
   .setVersion('0.0.1')
   .addTag('auth')
   .addTag('user')
+  .addTag('politician')
+  .addTag('vote')
   .addBearerAuth()
   .addSecurityRequirements('bearer')
   .build();

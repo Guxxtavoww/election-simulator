@@ -32,6 +32,10 @@ export class Users1719274509300 implements MigrationInterface {
             type: 'varchar',
             isUnique: true
           },
+          {
+            name: 'date_of_birth',
+            type: 'date',
+          },
         ],
       }),
     );

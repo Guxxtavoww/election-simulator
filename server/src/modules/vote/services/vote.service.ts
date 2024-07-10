@@ -69,9 +69,11 @@ export class VoteService {
   }
 
   async getVoteByVoterAndPolitician(voter_id: string, politician_id: string) {
-    const vote = await this.createVoteQueryBuilder()
-      .where('voter.id = :voter_id', { voter_id })
-      .andWhere('politician.id = :politician_id', { politician_id })
+    const vote = await voteRepository
+      .createQueryBuilder('v')
+      .select(['v.voter_id', 'v.politician_id'])
+      .where('v.voter_id = :voter_id', { voter_id })
+      .andWhere('v.politician_id = :politician_id', { politician_id })
       .getOne();
 
     return vote;

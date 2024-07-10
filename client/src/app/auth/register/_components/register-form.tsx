@@ -79,7 +79,7 @@ export function RegisterForm() {
         <InputFieldWithMask
           name="phone_number"
           label="Telefone"
-          placeholder="Insira seu número"
+          placeholder="Insira seu número (DD) 11111-1111"
           maskFn={phoneNumberMask}
         />
         <InputField

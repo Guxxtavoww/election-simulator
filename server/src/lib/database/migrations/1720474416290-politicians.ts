@@ -35,6 +35,11 @@ export class Politicians1720474416290 implements MigrationInterface {
             type: 'date',
             isNullable: true,
           },
+          {
+            name: 'votes_amount',
+            type: 'int',
+            default: 0,
+          },
         ],
       }),
       true,

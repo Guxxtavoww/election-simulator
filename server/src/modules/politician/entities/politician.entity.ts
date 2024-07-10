@@ -1,6 +1,7 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 
 import { Base } from 'src/lib/database/entities/base.entity';
+import { Vote } from 'src/modules/vote/entities/vote.entity';
 
 import type { CreatePoliticianPayload } from '../dtos/create-politician.dto';
 import type { UpdatePoliticianPayload } from '../dtos/update-politician.dto';
@@ -24,6 +25,12 @@ export class Politician extends Base {
 
   @Column('date', { nullable: true })
   date_of_birth: NullableValue<Date>;
+
+  @Column('int', { default: 0 })
+  votes_amount: number;
+
+  @OneToMany(() => Vote, (vote) => vote.politician)
+  votes: Vote[];
 
   static create(payload: CreatePoliticianPayload) {
     const item = new Politician();
@@ -49,4 +56,5 @@ export const baseSelect: `politician.${keyof Politician}`[] = [
   'politician.politician_photo_url',
   'politician.politician_name',
   'politician.political_ideology',
+  'politician.votes_amount',
 ];

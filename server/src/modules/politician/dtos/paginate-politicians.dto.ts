@@ -18,6 +18,7 @@ export const paginatePoliticiansSchema = createPaginationSchemaWithoutOrderBy({
   politician_name: optionalStringSchemaToLowerCase,
   political_ideology: optionalIdeologySchema,
   order_by_date_of_birth: optionalOrderParamSchema,
+  order_by_most_votes: optionalOrderParamSchema,
 });
 
 export type PaginatePoliticiansType = z.infer<typeof paginatePoliticiansSchema>;
@@ -45,4 +46,11 @@ export class PaginatePoliticiansDTO extends createZodDto(
     example: OrderByEnum.DESC,
   })
   order_by_date_of_birth?: 'ASC' | 'DESC';
+
+  @ApiPropertyOptional({
+    type: 'enum',
+    enum: OrderByEnum,
+    example: OrderByEnum.DESC,
+  })
+  order_by_most_votes?: 'ASC' | 'DESC';
 }

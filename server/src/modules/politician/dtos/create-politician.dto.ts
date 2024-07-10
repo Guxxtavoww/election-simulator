@@ -1,10 +1,10 @@
 import { z } from 'nestjs-zod/z';
 import { createZodDto } from 'nestjs-zod';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import {
   dateStringSchema,
-  integerNumberSchema,
+  optionalIntegerNumberSchema,
   stringSchema,
   urlStringSchema,
 } from 'src/shared/schemas.shared';
@@ -17,7 +17,7 @@ import {
 export const createPoliticianSchema = z.object({
   politician_name: stringSchema,
   politician_photo_url: urlStringSchema,
-  corruption_scandals_amount: integerNumberSchema,
+  corruption_scandals_amount: optionalIntegerNumberSchema,
   political_ideology: politicalIdeologySchema,
   date_of_birth: dateStringSchema,
 });
@@ -46,12 +46,12 @@ export class CreatePoliticianDTO extends createZodDto(createPoliticianSchema) {
   })
   political_ideology: PoliticianPoliticalIdeology;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Number of corruption scandals the politician is involved in',
     type: Number,
     example: 5,
   })
-  corruption_scandals_amount: number;
+  corruption_scandals_amount?: number;
 
   @ApiProperty({
     description: 'Date of birth of the politician',

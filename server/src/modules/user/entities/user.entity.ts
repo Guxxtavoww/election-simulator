@@ -1,6 +1,7 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 
 import { Base } from 'src/lib/database/entities/base.entity';
+import { Vote } from 'src/modules/vote/entities/vote.entity';
 import { BadRequestError } from 'src/lib/http-exceptions/errors/types/bad-request-error';
 
 import type { CreateUserPayload } from '../dtos/create-user.dto';
@@ -26,6 +27,12 @@ export class User extends Base {
   @Index()
   @Column('varchar', { unique: true })
   user_cpf_number: string;
+
+  @Column('date')
+  date_of_birth: Date;
+
+  @OneToMany(() => Vote, (vote) => vote.voter)
+  votes: Vote[];
 
   private static async handleCreateHashedPassword(
     password: string,

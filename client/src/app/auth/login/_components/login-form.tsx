@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Loader } from '@/components/tools/loader';
-import { login } from '@/server/actions/auth/login.action';
+import { auth } from '@/server/actions/auth/auth.action';
 import { InputField } from '@/components/tools/fields/input-field';
 import { useMutationWithToast } from '@/hooks/use-mutation-with-toast.hook';
 
@@ -16,7 +16,7 @@ import { type LoginPayload, loginSchema } from '../_schemas/login.schema';
 export function LoginForm() {
   const { mutateAsync, isPending } = useMutationWithToast({
     mutationKey: ['login'],
-    mutationFn: async (data: LoginPayload) => login(data),
+    mutationFn: async (data: LoginPayload) => auth(false, data),
     toastCustomError: 'Credenciais inválidas',
   });
 
@@ -41,13 +41,13 @@ export function LoginForm() {
         <InputField
           name="user_email"
           type="email"
-          label="Seu e-mail"
+          label="E-mail"
           placeholder="Insira seu e-mail"
         />
         <InputField
           name="password"
           type="password"
-          label="Sua senha"
+          label="Senha"
           placeholder="Insira sua senha"
         />
         <Button type="submit" disabled={isPending}>

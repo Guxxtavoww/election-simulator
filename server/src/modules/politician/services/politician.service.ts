@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { PaginationService } from 'src/lib/pagination/pagination.service';
 import { NotFoundError } from 'src/lib/http-exceptions/errors/types/not-found-error';
+import { BadRequestError } from 'src/lib/http-exceptions/errors/types/bad-request-error';
 
 import { baseSelect, Politician } from '../entities/politician.entity';
 import { politicianRepository } from '../repositories/politician.repository';
@@ -25,6 +26,7 @@ export class PoliticianService {
     order_by_date_of_birth,
     political_ideology,
     politician_name,
+    order_by_most_votes,
   }: PaginatePoliticiansType) {
     const queryBuilder = this.createPoliticianQueryBuilder()
       .where(
@@ -44,6 +46,9 @@ export class PoliticianService {
 
     if (order_by_date_of_birth)
       queryBuilder.orderBy('politician.date_of_birth', order_by_date_of_birth);
+
+    if (order_by_most_votes)
+      queryBuilder.orderBy('politician.votes_amount', order_by_most_votes);
 
     return this.paginationService.paginateWithQueryBuilder(queryBuilder, {
       limit,
@@ -67,6 +72,17 @@ export class PoliticianService {
     const item = Politician.create(payload);
 
     return politicianRepository.save(item);
+  }
+
+  async updateVotesAmount(politician: Politician, type: CountHandler) {
+    if (politician.votes_amount === 0 && type === 'decrement')
+      throw new BadRequestError('Cant decrement');
+
+    politician.votes_amount += type === 'increment' ? 1 : -1;
+
+    return politicianRepository.update(politician.id, {
+      votes_amount: politician.votes_amount,
+    });
   }
 
   async updatePolitician(id: string, payload: UpdatePoliticianPayload) {

@@ -27,7 +27,7 @@ export function AuthProvider({ children }: WithChildren) {
     toastCustomSuccessMessage: 'Logged Out!',
   });
 
-  const contextValue = useMemo(
+  const contextValue: AuthContextProps | undefined = useMemo(
     () =>
       data
         ? {

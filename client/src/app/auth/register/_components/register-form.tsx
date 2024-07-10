@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Loader } from '@/components/tools/loader';
-import { register } from '@/server/actions/auth/register.action';
+import { auth } from '@/server/actions/auth/auth.action';
 import { InputField } from '@/components/tools/fields/input-field';
 import { cpfNumberMask, phoneNumberMask } from '@/utils/masks.utils';
 import { useMutationWithToast } from '@/hooks/use-mutation-with-toast.hook';
@@ -22,7 +22,7 @@ export function RegisterForm() {
   const { mutateAsync, isPending } = useMutationWithToast({
     mutationKey: ['login'],
     mutationFn: async ({ confirmed_password, ...rest }: RegisterPayload) =>
-      register(rest),
+      auth(true, rest),
     toastCustomError: 'Email already exists',
   });
 

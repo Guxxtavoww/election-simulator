@@ -5,8 +5,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   stringSchema,
   emailStringSchema,
-  optionalPhoneNumberStringSchema,
   cpfStringSchema,
+  dateStringSchema,
+  optionalPhoneNumberStringSchema,
 } from 'src/shared/schemas.shared';
 
 export const createUserSchema = z.object({
@@ -15,9 +16,10 @@ export const createUserSchema = z.object({
   password: stringSchema,
   phone_number: optionalPhoneNumberStringSchema,
   user_cpf_number: cpfStringSchema,
+  date_of_birth: dateStringSchema,
 });
 
-export type CreateUserPayload = z.infer<typeof createUserSchema>
+export type CreateUserPayload = z.infer<typeof createUserSchema>;
 
 export class CreateUserDTO extends createZodDto(createUserSchema) {
   @ApiProperty({ type: String, description: 'User name' })
@@ -34,4 +36,7 @@ export class CreateUserDTO extends createZodDto(createUserSchema) {
 
   @ApiProperty({ type: String, example: '123.456.789-00' })
   user_cpf_number: string;
+
+  @ApiProperty({ type: String, example: '2003-12-09' })
+  date_of_birth: Date;
 }

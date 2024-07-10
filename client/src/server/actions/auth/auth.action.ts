@@ -13,7 +13,9 @@ import type { LoginAndRegisterResponsePayload } from './auth.types';
 
 export async function auth<T extends boolean>(
   isRegister: T,
-  payload: T extends false ? LoginPayload : Omit<RegisterPayload, 'confirmed_password'>
+  payload: T extends false
+    ? LoginPayload
+    : Omit<RegisterPayload, 'confirmed_password'>
 ) {
   try {
     const { access_token, user } =

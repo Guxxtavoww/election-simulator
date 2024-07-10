@@ -79,3 +79,7 @@
     @apply min-h-[calc(100svh-6rem)];
   }
 }
+
+.rdp-vhidden {
+  @apply hidden;
+}

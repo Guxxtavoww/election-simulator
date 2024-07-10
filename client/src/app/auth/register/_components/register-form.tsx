@@ -17,6 +17,7 @@ import {
   registerSchema,
   type RegisterPayload,
 } from '../_schemas/register.schema';
+import { DateInputField } from '@/components/tools/fields/date-input-field';
 
 export function RegisterForm() {
   const { mutateAsync, isPending } = useMutationWithToast({
@@ -63,6 +64,17 @@ export function RegisterForm() {
           placeholder="Insira seu CPF"
           maskFn={cpfNumberMask}
           isRequired
+        />
+        <DateInputField
+          name="date_of_birth"
+          disableCalendarFn={(date) => date > new Date()}
+          label="Data de nascimento"
+          isRequired
+          calendarProps={{
+            captionLayout: 'dropdown-buttons',
+            fromYear: new Date().getFullYear() - 122,
+            toYear: new Date().getFullYear(),
+          }}
         />
         <InputFieldWithMask
           name="phone_number"

@@ -29,7 +29,7 @@ export class User extends Base {
   user_cpf_number: string;
 
   @Column('date')
-  date_of_birth: Date;
+  date_of_birth: string;
 
   @OneToMany(() => Vote, (vote) => vote.voter)
   votes: Vote[];

@@ -26,6 +26,7 @@ export const PasswordInput = forwardRef<
         className="absolute right-[0px] mr-2.5"
         type="button"
         disabled={rest.disabled}
+        tabIndex={-1}
         onClick={() =>
           setInputType((prev) => (prev === 'password' ? 'text' : 'password'))
         }

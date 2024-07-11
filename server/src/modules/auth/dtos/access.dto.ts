@@ -22,10 +22,8 @@ export class UserDTO {
   @ApiProperty()
   user_cpf_number: string;
 
-  // @ApiProperty({
-  //   description: 'Total Friends count',
-  // })
-  // total_friends_count: number;
+  @ApiProperty()
+  date_of_birth: string;
 }
 
 export class AccessDTO {

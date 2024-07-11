@@ -29,7 +29,7 @@ export class Politician extends Base {
   politician_type: PoliticianType;
 
   @Column('date', { nullable: true })
-  date_of_birth: NullableValue<Date>;
+  date_of_birth: NullableValue<string>;
 
   @Column('int', { default: 0 })
   votes_amount: number;

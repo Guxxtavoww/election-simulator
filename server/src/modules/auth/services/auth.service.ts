@@ -79,6 +79,7 @@ export class AuthService {
         updated_at: user.updated_at,
         phone_number: user.phone_number,
         user_cpf_number: user.user_cpf_number,
+        date_of_birth: user.date_of_birth,
       },
       access_token,
     };

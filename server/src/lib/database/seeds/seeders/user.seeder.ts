@@ -20,7 +20,7 @@ export default class UserSeeder implements Seeder {
       hashed_password: await createHashedPassword('password123'),
       user_cpf_number: '503.493.138-90',
       phone_number: '(11) 98945-9239',
-      date_of_birth: new Date('2003-12-09')
+      date_of_birth: '2003-12-09',
     });
 
     await userRepository.save(newUser);

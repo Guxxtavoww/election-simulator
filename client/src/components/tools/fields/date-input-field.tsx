@@ -73,7 +73,7 @@ export function DateInputField({
                   )}
                 >
                   {field.value ? (
-                    formatToDate(field.value, false)
+                    formatToDate(field.value, 'date')
                   ) : (
                     <span>Escolha uma data</span>
                   )}

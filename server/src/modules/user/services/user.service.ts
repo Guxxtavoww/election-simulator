@@ -22,6 +22,7 @@ export class UserService {
       'user.user_email',
       'user.phone_number',
       'user.user_cpf_number',
+      'user.date_of_birth',
     ];
 
     const baseQueryBuilder = userRepository

@@ -1,8 +1,14 @@
+export type Formats =
+  | 'datetime-with-sub-values'
+  | 'date'
+  | 'datetime-without-sub-values';
+
 export const formatToDate = (
   currentDate: string | number | Date,
-  hasMinutesAndHoursAndSecounds = true 
+  format: Formats = 'datetime-with-sub-values'
 ): string => {
-  const showSubValues = hasMinutesAndHoursAndSecounds ? '2-digit' : undefined;
+  const showSubValues =
+    format === 'datetime-with-sub-values' ? '2-digit' : undefined;
 
   const dateFormatter = new Intl.DateTimeFormat('pt-br', {
     year: 'numeric',
@@ -13,7 +19,13 @@ export const formatToDate = (
     second: showSubValues,
   });
 
-  return dateFormatter.format(new Date(currentDate));
+  const datefyedValue = new Date(currentDate);
+
+  if (format === 'date') {
+    datefyedValue.setDate(datefyedValue.getDate() + 1);
+  }
+
+  return dateFormatter.format(datefyedValue);
 };
 
 export const formatRelativeTime = (

@@ -71,5 +71,5 @@ export class UpdatePoliticianDTO extends createZodDto(updatePoliticianSchema) {
     format: 'date',
     example: '1980-01-01',
   })
-  date_of_birth?: Date;
+  date_of_birth?: string;
 }

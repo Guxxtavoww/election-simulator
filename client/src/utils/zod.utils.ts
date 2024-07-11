@@ -65,9 +65,7 @@ export const datetimeStringSchema = stringSchema
   .datetime()
   .transform((value) => new Date(value));
 
-export const dateStringSchema = stringSchema
-  .date()
-  .transform((value) => new Date(value));
+export const dateStringSchema = stringSchema.date();
 
 /**
  * -----------------------------------------------------------------------------

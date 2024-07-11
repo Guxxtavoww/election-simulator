@@ -38,5 +38,5 @@ export class CreateUserDTO extends createZodDto(createUserSchema) {
   user_cpf_number: string;
 
   @ApiProperty({ type: String, example: '2003-12-09' })
-  date_of_birth: Date;
+  date_of_birth: string;
 }

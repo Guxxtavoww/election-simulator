@@ -13,6 +13,7 @@ import { BadRequestError } from 'src/lib/http-exceptions/errors/types/bad-reques
 import {
   alias,
   baseSelect,
+  perfomaticSelect,
   politicianAlias,
   Vote,
   voterAlias,
@@ -28,7 +29,10 @@ export class VoteService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  createVoteQueryBuilder() {
+  createVoteQueryBuilder(usePerfomaticSelect = false) {
+    if (usePerfomaticSelect)
+      return voteRepository.createQueryBuilder(alias).select(perfomaticSelect);
+
     return voteRepository
       .createQueryBuilder(alias)
       .leftJoinAndSelect(`${alias}.voter`, voterAlias)

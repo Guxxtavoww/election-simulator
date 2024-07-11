@@ -78,9 +78,9 @@ export class PoliticianService {
     const politicians_ids = items.map((politician) => politician.id);
 
     const votedPoliticians = await this.voteService
-      .createVoteQueryBuilder()
-      .where('politician.id IN (:...politicians_ids)', { politicians_ids })
-      .andWhere('voter.id = :logged_in_user_id', { logged_in_user_id })
+      .createVoteQueryBuilder(true)
+      .where('politician_id IN (:...politicians_ids)', { politicians_ids })
+      .andWhere('voter_id = :logged_in_user_id', { logged_in_user_id })
       .take(politicians_ids.length)
       .getMany();
 

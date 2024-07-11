@@ -36,6 +36,11 @@ export const alias = 'vote';
 export const voterAlias = 'voter';
 export const politicianAlias = 'politician';
 
+export const perfomaticSelect: `${typeof alias}.${keyof Vote}`[] = [
+  'vote.politician_id',
+  'vote.voter_id',
+];
+
 export const baseSelect: (
   | `${typeof alias}.${keyof Vote}`
   | `${typeof voterAlias}.${keyof User}`

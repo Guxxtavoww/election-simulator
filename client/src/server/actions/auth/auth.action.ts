@@ -3,13 +3,13 @@
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
+import { api } from '@/lib/api.lib';
 import { setCookie } from '@/server/helpers/cookie.helpers';
-import { validateApiCall } from '@/utils/validate-api-call.util';
 import type { LoginPayload } from '@/app/auth/login/_schemas/login.schema';
 import type { RegisterPayload } from '@/app/auth/register/_schemas/register.schema';
 import { getExpirationDateFromToken } from '@/utils/get-expiration-date-from-token.util';
 
-import type { LoginAndRegisterResponsePayload } from './auth.types';
+import type { LoginAndRegisterResponse } from './auth.types';
 
 export async function auth<T extends boolean>(
   isRegister: T,
@@ -18,14 +18,12 @@ export async function auth<T extends boolean>(
     : Omit<RegisterPayload, 'confirmed_password'>
 ) {
   try {
-    const { access_token, user } =
-      await validateApiCall<LoginAndRegisterResponsePayload>({
-        endpoint: !isRegister ? '/auth/login' : '/auth/register',
-        // @ts-ignore
-        zodSchema: loginAndRegisterResponseSchema,
-        body: payload,
-        method: 'POST',
-      });
+    const { access_token, user } = await api
+      .post<LoginAndRegisterResponse>(
+        !isRegister ? '/auth/login' : '/auth/register',
+        payload
+      )
+      .then((res) => Promise.resolve(res.data));
 
     const expires = getExpirationDateFromToken(access_token);
 

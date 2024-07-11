@@ -20,13 +20,9 @@ export const userSchema = z.object({
   phone_number: optionalPhoneNumberStringSchema,
 });
 
-export const loginAndRegisterResponseSchema = z.object({
-  user: userSchema,
-  access_token: stringSchema,
-});
-
-export type LoginAndRegisterResponsePayload = z.infer<
-  typeof loginAndRegisterResponseSchema
->;
-
 export type UserType = z.infer<typeof userSchema>;
+
+export interface LoginAndRegisterResponse {
+  user: UserType;
+  access_token: string
+}

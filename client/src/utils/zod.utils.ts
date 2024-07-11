@@ -28,6 +28,13 @@ export const integerNumberSchema = numberSchema.int();
 export const floatNumberSchema = numberSchema.refine((val) => val % 1 !== 0, {
   message: 'Value must be float',
 });
+export const dateSchema = z
+  .date({ required_error: 'Insira uma data' })
+  .transform((date) => {
+    const stringfyedDate = date.toISOString();
+
+    return stringfyedDate.split('T')[0];
+  });
 
 export const cpfStringSchema = stringSchema.regex(
   /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
@@ -69,6 +76,8 @@ export const dateStringSchema = stringSchema
  */
 export const optionalEmailStringSchema =
   createNullableTransform(emailStringSchema);
+
+export const optionalDateSchema = createNullableTransform(dateSchema);
 
 export const optionalStringSchema = createNullableTransform(stringSchema);
 

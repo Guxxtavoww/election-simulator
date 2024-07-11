@@ -1,7 +1,8 @@
 'use client';
 
-import { useFormContext } from 'react-hook-form';
+import { useState } from 'react';
 import { CalendarIcon } from 'lucide-react';
+import { useFormContext } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Calendar, type CalendarProps } from '@/components/ui/calendar';
@@ -43,6 +44,7 @@ export function DateInputField({
   calendarProps,
 }: DateInputFieldProps): JSX.Element {
   const { control } = useFormContext();
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   return (
     <FormField
@@ -60,7 +62,7 @@ export function DateInputField({
               ) : null}
             </FormLabel>
           ) : null}
-          <Popover>
+          <Popover onOpenChange={setIsCalendarOpen} open={isCalendarOpen}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
@@ -83,7 +85,10 @@ export function DateInputField({
               <Calendar
                 mode="single"
                 selected={field.value}
-                onSelect={field.onChange}
+                onSelect={(date) => {
+                  field.onChange(date);
+                  setIsCalendarOpen(false);
+                }}
                 disabled={disableCalendarFn}
                 initialFocus
                 {...calendarProps}

@@ -4,6 +4,7 @@ import {
   stringSchema,
   cpfStringSchema,
   emailStringSchema,
+  dateSchema,
   optionalPhoneNumberStringSchema,
 } from '@/utils/zod.utils';
 
@@ -15,7 +16,7 @@ export const registerSchema = z
     user_name: stringSchema,
     phone_number: optionalPhoneNumberStringSchema,
     user_cpf_number: cpfStringSchema,
-    date_of_birth: z.date({ required_error: 'Insira sua data de nascimento' }),
+    date_of_birth: dateSchema,
   })
   .refine((data) => data.password === data.confirmed_password, {
     message: 'Senhas não são iguais',

@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 
 import { VoteService } from './services/vote.service';
 import { VoteController } from './controller/vote.controller';
 import { PoliticianModule } from '../politician/politician.module';
 
 @Module({
-  imports: [PoliticianModule],
+  imports: [forwardRef(() => PoliticianModule)],
   providers: [VoteService],
   controllers: [VoteController],
   exports: [VoteService],

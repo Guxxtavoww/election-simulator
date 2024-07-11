@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { UuidParam } from 'src/shared/decorators/uuid-param.decorator';
+import { DecodedToken } from 'src/shared/decorators/decoded-token.decorator';
 import { ApiPaginationQuery } from 'src/shared/decorators/api-pagination-query.decorator';
 import { DataBaseInterceptorDecorator } from 'src/shared/decorators/database-interceptor.decorator';
 
@@ -25,8 +26,11 @@ export class PoliticianController {
 
   @Get('paginate')
   @ApiPaginationQuery([], true)
-  paginate(@Query() querys: PaginatePoliticiansDTO) {
-    return this.politicianService.paginatePoliticians(querys);
+  paginate(
+    @Query() querys: PaginatePoliticiansDTO,
+    @DecodedToken() decoded_token: DecodedTokenType,
+  ) {
+    return this.politicianService.paginatePoliticians(querys, decoded_token.id);
   }
 
   @Get(':id')

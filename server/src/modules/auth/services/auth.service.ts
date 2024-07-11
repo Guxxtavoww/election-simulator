@@ -34,6 +34,7 @@ export class AuthService {
     user_name,
     user_cpf_number,
     phone_number,
+    date_of_birth,
   }: CreateUserPayload): Promise<AccessDTO> {
     const newUser = await this.usersService.createUser({
       user_email,
@@ -41,6 +42,7 @@ export class AuthService {
       password,
       user_cpf_number,
       phone_number,
+      date_of_birth,
     });
 
     const access_token = await this.generateAccessToken(newUser);

@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 
 import { PaginationService } from 'src/lib/pagination/pagination.service';
 import { NotFoundError } from 'src/lib/http-exceptions/errors/types/not-found-error';
@@ -18,11 +23,12 @@ import { PaginateVotesPayload } from '../dtos/paginate-votes.dto';
 @Injectable()
 export class VoteService {
   constructor(
+    @Inject(forwardRef(() => PoliticianService))
     private readonly politicianService: PoliticianService,
     private readonly paginationService: PaginationService,
   ) {}
 
-  private createVoteQueryBuilder() {
+  createVoteQueryBuilder() {
     return voteRepository
       .createQueryBuilder(alias)
       .leftJoinAndSelect(`${alias}.voter`, voterAlias)

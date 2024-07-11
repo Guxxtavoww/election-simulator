@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 
+import { VoteService } from 'src/modules/vote/services/vote.service';
 import { PaginationService } from 'src/lib/pagination/pagination.service';
 import { NotFoundError } from 'src/lib/http-exceptions/errors/types/not-found-error';
 import { BadRequestError } from 'src/lib/http-exceptions/errors/types/bad-request-error';
@@ -12,7 +13,11 @@ import type { PaginatePoliticiansType } from '../dtos/paginate-politicians.dto';
 
 @Injectable()
 export class PoliticianService {
-  constructor(private readonly paginationService: PaginationService) {}
+  constructor(
+    private readonly paginationService: PaginationService,
+    @Inject(forwardRef(() => VoteService))
+    private readonly voteService: VoteService,
+  ) {}
 
   private createPoliticianQueryBuilder() {
     return politicianRepository
@@ -20,15 +25,18 @@ export class PoliticianService {
       .select(baseSelect);
   }
 
-  async paginatePoliticians({
-    limit,
-    page,
-    order_by_date_of_birth,
-    political_ideology,
-    politician_name,
-    order_by_most_votes,
-    politician_type,
-  }: PaginatePoliticiansType) {
+  async paginatePoliticians(
+    {
+      limit,
+      page,
+      order_by_date_of_birth,
+      political_ideology,
+      politician_name,
+      order_by_most_votes,
+      politician_type,
+    }: PaginatePoliticiansType,
+    logged_in_user_id: string,
+  ) {
     const queryBuilder = this.createPoliticianQueryBuilder()
       .where(
         political_ideology
@@ -57,10 +65,36 @@ export class PoliticianService {
     if (order_by_most_votes)
       queryBuilder.orderBy('politician.votes_amount', order_by_most_votes);
 
-    return this.paginationService.paginateWithQueryBuilder(queryBuilder, {
-      limit,
-      page,
-    });
+    const paginationResult =
+      await this.paginationService.paginateWithQueryBuilder(queryBuilder, {
+        limit,
+        page,
+      });
+
+    if (!paginationResult.items.length) return paginationResult;
+
+    const { items, meta } = paginationResult;
+
+    const politicians_ids = items.map((politician) => politician.id);
+
+    const votedPoliticians = await this.voteService
+      .createVoteQueryBuilder()
+      .where('politician.id IN (:...politicians_ids)', { politicians_ids })
+      .andWhere('voter.id = :logged_in_user_id', { logged_in_user_id })
+      .take(politicians_ids.length)
+      .getMany();
+
+    const politiciansSet = new Set(
+      votedPoliticians.map((votedPolitician) => votedPolitician.politician.id),
+    );
+
+    return {
+      items: items.map((item) => ({
+        ...item,
+        voted_by_current_user: politiciansSet.has(item.id),
+      })),
+      meta,
+    };
   }
 
   async getPoliticianById(id: string) {
@@ -68,9 +102,7 @@ export class PoliticianService {
       .where('politician.id = :id', { id })
       .getOne();
 
-    if (!politician) {
-      throw new NotFoundError('Not Valid');
-    }
+    if (!politician) throw new NotFoundError('Not Valid');
 
     return politician;
   }

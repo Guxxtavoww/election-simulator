@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { logOut, session } from '@/lib/session.lib';
@@ -8,7 +8,7 @@ import type { UserType } from '@/server/actions/auth/auth.types';
 import { useMutationWithToast } from '@/hooks/use-mutation-with-toast.hook';
 
 export interface AuthContextProps {
-  user: UserType;
+  user?: UserType;
   isLoading: boolean;
   logout: () => void;
 }
@@ -27,20 +27,16 @@ export function AuthProvider({ children }: WithChildren) {
     toastCustomSuccessMessage: 'Logged Out!',
   });
 
-  const contextValue: AuthContextProps | undefined = useMemo(
-    () =>
-      data
-        ? {
-            user: data.user,
-            isLoading: isLoading || isPending,
-            logout: () => mutate(),
-          }
-        : undefined,
-    [data, mutate, isLoading, isPending]
-  );
-
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        user: data?.user,
+        isLoading: isLoading || isPending,
+        logout: () => mutate(),
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 

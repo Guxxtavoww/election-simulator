@@ -46,9 +46,17 @@ export const datetimeStringSchema = stringSchema
   .datetime()
   .transform((value) => new Date(value));
 
-export const dateStringSchema = stringSchema
-  .date()
-  .transform((value) => new Date(value));
+export const dateStringSchema = stringSchema.date().transform((value) => {
+  const [year, month, day] = value.split('-').map(Number) as [
+    number,
+    number,
+    number,
+  ];
+
+  const date = new Date(Date.UTC(year, month - 1, day + 1)); // In JavaScript, the Date constructor and Date.UTC method use a zero-based index for months, meaning January is 0, February is 1, and so on. Therefore, when you convert a date string in the format "YYYY-MM-DD" into a Date object, you need to subtract 1 from the month value to get the correct month, and add 1 to day correct the database subvalues.
+
+  return date;
+});
 
 /**
  * -----------------------------------------------------------------------------

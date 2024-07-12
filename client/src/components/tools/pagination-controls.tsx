@@ -11,7 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { basePaginationItems } from '@/utils/create-pagination-schema.util';
+import { basePaginationItems } from '@/utils/create-pagination-schema.utils';
 import { useSearchParamsManager } from '@/hooks/use-search-params-manager.hook';
 
 export function PaginationControls({

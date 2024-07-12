@@ -82,6 +82,10 @@ export const optionalStringSchema = createNullableTransform(stringSchema);
 export const optionalStringToNumberSchema =
   createNullableTransform(stringToNumberSchema);
 
+export const optionalStringSchemaToLowerCase = optionalStringSchema.transform(
+  (val) => val?.toLocaleLowerCase()
+);
+
 export const optionalPhoneNumberStringSchema = createNullableTransform(
   phoneNumberStringSchema
 );

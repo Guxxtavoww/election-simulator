@@ -59,5 +59,8 @@ export async function session<ForceNoUndefined extends boolean = false>(
 export async function logOut() {
   await removeAllCookies();
 
+  cache.data = null;
+  cache.expiry = 0;
+
   redirect('/auth/login');
 }

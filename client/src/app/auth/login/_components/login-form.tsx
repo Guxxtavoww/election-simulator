@@ -18,6 +18,7 @@ export function LoginForm() {
     mutationKey: ['login'],
     mutationFn: async (data: LoginPayload) => auth(false, data),
     toastCustomError: 'Credenciais inválidas',
+    toastCustomSuccessMessage: 'Logado com sucesso!',
   });
 
   const form = useForm<LoginPayload>({

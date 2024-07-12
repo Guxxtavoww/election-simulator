@@ -24,7 +24,7 @@ export function AuthProvider({ children }: WithChildren) {
   const { mutate, isPending } = useMutationWithToast({
     mutationKey: ['logout'],
     mutationFn: logOut,
-    toastCustomSuccessMessage: 'Logged Out!',
+    toastCustomSuccessMessage: 'Saiu com successo!',
   });
 
   return (

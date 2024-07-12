@@ -24,6 +24,7 @@ export default async function Page({ searchParams }: ServerComponentPageProps) {
       <PaginationControls
         currentPage={meta.currentPage}
         totalPages={meta.totalPages}
+        itemsPerPage={meta.itemsPerPage}
       />
     </div>
   );

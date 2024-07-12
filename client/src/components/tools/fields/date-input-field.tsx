@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { cn } from '@/utils/cn.util';
-import { formatToDate } from '@/utils/date.utils';
+import { type Formats, formatToDate } from '@/utils/date.utils';
 
 export interface DateInputFieldProps {
   name: string;
@@ -28,6 +28,7 @@ export interface DateInputFieldProps {
   label?: string;
   disableCalendarFn?: (date: Date) => boolean;
   isRequired?: boolean;
+  dateFormat?: Formats;
   calendarProps?: Omit<
     CalendarProps,
     'locale' | 'mode' | 'selected' | 'onSelect' | 'disabled' | 'initialFocus'
@@ -42,6 +43,7 @@ export function DateInputField({
   isRequired,
   disableCalendarFn,
   calendarProps,
+  dateFormat = 'datetime-without-sub-values',
 }: DateInputFieldProps): JSX.Element {
   const { control } = useFormContext();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -73,7 +75,7 @@ export function DateInputField({
                   )}
                 >
                   {field.value ? (
-                    formatToDate(field.value, 'date')
+                    formatToDate(field.value, dateFormat)
                   ) : (
                     <span>Escolha uma data</span>
                   )}

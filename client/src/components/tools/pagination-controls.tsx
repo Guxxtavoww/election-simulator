@@ -14,10 +14,20 @@ import {
 import { basePaginationItems } from '@/utils/create-pagination-schema.utils';
 import { useSearchParamsManager } from '@/hooks/use-search-params-manager.hook';
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
+import { ScrollArea } from '../ui/scroll-area';
+
 export function PaginationControls({
   currentPage,
   totalPages,
-}: Pick<iPaginationMeta, 'currentPage' | 'totalPages'>) {
+  itemsPerPage,
+}: Pick<iPaginationMeta, 'currentPage' | 'totalPages' | 'itemsPerPage'>) {
   const { setSearchParam } = useSearchParamsManager([...basePaginationItems]);
 
   const getPaginationItems = useCallback(() => {
@@ -61,37 +71,61 @@ export function PaginationControls({
   const paginationItems = getPaginationItems();
 
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage <= 1}
-          />
-        </PaginationItem>
-        {paginationItems.map((page, index) =>
-          page === 'ellipsis' ? (
-            <PaginationItem key={`ellipsis-${index}`}>
-              <PaginationEllipsis />
-            </PaginationItem>
-          ) : (
-            <PaginationItem key={page}>
-              <PaginationLink
-                isActive={page === currentPage}
-                onClick={() => handlePageChange(+page)}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          )
-        )}
-        <PaginationItem>
-          <PaginationNext
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages || totalPages === 0}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+    <div className="w-full flex justify-between">
+      <Select
+        defaultValue={itemsPerPage.toString()}
+        onValueChange={(value) => setSearchParam('limit', value)}
+      >
+        <SelectTrigger className="max-w-xs">
+          <SelectValue placeholder="Limite Por Página" />
+        </SelectTrigger>
+        <SelectContent>
+          <ScrollArea className="h-52">
+            <SelectItem value="5">5</SelectItem>
+            {[...Array(10).keys()].map((page, index) => {
+              const fixedPage = ((page + 1) * 10).toString();
+
+              return (
+                <SelectItem value={fixedPage} key={index}>
+                  {fixedPage}
+                </SelectItem>
+              );
+            })}
+          </ScrollArea>
+        </SelectContent>
+      </Select>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage <= 1}
+            />
+          </PaginationItem>
+          {paginationItems.map((page, index) =>
+            page === 'ellipsis' ? (
+              <PaginationItem key={`ellipsis-${index}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  isActive={page === currentPage}
+                  onClick={() => handlePageChange(+page)}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          )}
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages || totalPages === 0}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
   );
 }

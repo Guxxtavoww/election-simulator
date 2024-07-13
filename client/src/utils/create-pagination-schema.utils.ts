@@ -5,10 +5,13 @@ import {
   optionalPaginationParamSchema,
 } from './zod.utils';
 
+const pageSchema = optionalPaginationParamSchema.default(1);
+const limitSchema = optionalPaginationParamSchema.default(10);
+
 export function createPaginationSchema<T extends ZodRawShape>(fields?: T) {
   const paginationSchema = z.object({
-    page: optionalPaginationParamSchema,
-    limit: optionalPaginationParamSchema,
+    page: pageSchema,
+    limit: limitSchema,
     order_by_created_at: optionalOrderParamSchema,
     order_by_updated_at: optionalOrderParamSchema,
     ...fields,
@@ -18,11 +21,11 @@ export function createPaginationSchema<T extends ZodRawShape>(fields?: T) {
 }
 
 export function createPaginationSchemaWithoutOrderBy<T extends ZodRawShape>(
-  fields: T
+  fields?: T
 ) {
   const paginationSchema = z.object({
-    page: optionalPaginationParamSchema.default(1),
-    limit: optionalPaginationParamSchema.default(10),
+    page: pageSchema,
+    limit: limitSchema,
     ...fields,
   });
 
@@ -37,11 +40,5 @@ export const basePaginationItems = [
   {
     key: 'limit',
     defaultValue: '10',
-  },
-  {
-    key: 'order_by_created_at',
-  },
-  {
-    key: 'order_by_updated_at',
   },
 ] as const;

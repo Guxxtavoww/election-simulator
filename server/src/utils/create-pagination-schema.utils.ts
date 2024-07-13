@@ -5,10 +5,13 @@ import {
   optionalPaginationParamSchema,
 } from 'src/shared/schemas.shared';
 
+const pageSchema = optionalPaginationParamSchema.default(1);
+const limitSchema = optionalPaginationParamSchema.default(10);
+
 export function createPaginationSchema<T extends ZodRawShape>(fields: T) {
   const paginationSchema = z.object({
-    page: optionalPaginationParamSchema.default(1),
-    limit: optionalPaginationParamSchema.default(10),
+    page: pageSchema,
+    limit: limitSchema,
     order_by_created_at: optionalOrderParamSchema,
     order_by_updated_at: optionalOrderParamSchema,
     ...fields,
@@ -21,8 +24,8 @@ export function createPaginationSchemaWithoutOrderBy<T extends ZodRawShape>(
   fields: T,
 ) {
   const paginationSchema = z.object({
-    page: optionalPaginationParamSchema.default(1),
-    limit: optionalPaginationParamSchema.default(10),
+    page: pageSchema,
+    limit: limitSchema,
     ...fields,
   });
 

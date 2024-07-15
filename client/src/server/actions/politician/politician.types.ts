@@ -22,7 +22,7 @@ export enum PoliticianType {
   MAYOR = 'prefeito(a)',
 }
 
-export type Politician = {
+export type PoliticianEntity = {
   id: string;
   date_of_birth: string;
   corruption_scandals_amount: number;
@@ -33,9 +33,11 @@ export type Politician = {
   politician_type: PoliticianType;
 };
 
-export type PaginatePoliticiansResponse = iPaginationResponse<
-  Politician & { voted_by_current_user: boolean }
->;
+export interface Politician extends PoliticianEntity {
+  voted_by_current_user: boolean;
+}
+
+export type PaginatePoliticiansResponse = PaginationResponse<Politician>;
 
 export const politicalIdeologySchema = z.nativeEnum(
   PoliticianPoliticalIdeology
@@ -50,15 +52,21 @@ export const politicianTypeSchema = z.nativeEnum(PoliticianType);
 export const optionalPoliticianTypeSchema =
   createNullableTransform(politicianTypeSchema);
 
+const base_fields = {
+  politician_name: optionalStringSchemaToLowerCase,
+  political_ideology: optionalIdeologySchema,
+  order_by_date_of_birth: optionalOrderParamSchema,
+  order_by_most_votes: optionalOrderParamSchema,
+  politician_type: optionalPoliticianTypeSchema,
+} as const;
+
 export const paginatePoliticiansParamsSchema =
-  createPaginationSchemaWithoutOrderBy({
-    politician_name: optionalStringSchemaToLowerCase,
-    political_ideology: optionalIdeologySchema,
-    order_by_date_of_birth: optionalOrderParamSchema,
-    order_by_most_votes: optionalOrderParamSchema,
-    politician_type: optionalPoliticianTypeSchema,
-  });
+  createPaginationSchemaWithoutOrderBy(base_fields);
 
 export type PaginatePoliticiansParams = z.infer<
   typeof paginatePoliticiansParamsSchema
 >;
+
+export const listPoliticiansParamsSchema = z.object(base_fields);
+
+export type ListPoliticiansParams = z.infer<typeof listPoliticiansParamsSchema>;

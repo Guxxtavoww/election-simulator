@@ -37,7 +37,7 @@ declare global {
     currentPage: number;
   }
 
-  export interface iPaginationResponse<T> {
+  export interface PaginationResponse<T> {
     items: T[];
     meta: iPaginationMeta;
   }

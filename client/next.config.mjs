@@ -2,11 +2,13 @@ import { withHydrationOverlay } from '@builder.io/react-hydration-overlay/next';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    taint: true,
-  },
   images: {
-    domains: ['upload.wikimedia.org'],
+    domains: [
+      'upload.wikimedia.org',
+      'miro.medium.com',
+      'ichef.bbci.co.uk',
+      'www.camara.leg.br',
+    ],
   },
 };
 

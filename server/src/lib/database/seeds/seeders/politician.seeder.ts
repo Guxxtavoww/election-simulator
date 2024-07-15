@@ -10,7 +10,7 @@ const politiciansArray = [
   {
     politician_name: 'Lula da Silva',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/4/48/Lula_-_foto_oficial_2007.jpg',
+      'https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/15966/production/_100722488_1980-lula-fichado-no-dops.png.webp',
     corruption_scandals_amount: 2,
     political_ideology: PoliticianPoliticalIdeology.FAR_LEFT,
     date_of_birth: '1945-10-27',
@@ -19,7 +19,7 @@ const politiciansArray = [
   {
     politician_name: 'Jair Bolsonaro',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/3/33/Presidente_Jair_Bolsonaro.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/7/70/2022-09-07_Desfile_C%C3%ADvico-Militar_por_ocasi%C3%A3o_das_Comemora%C3%A7%C3%B5es_do_Bicenten%C3%A1rio_da_Independ%C3%AAncia_do_Brasil_-_52341366768_%28cropped%29.jpg',
     corruption_scandals_amount: 1,
     political_ideology: PoliticianPoliticalIdeology.RIGHT,
     date_of_birth: '1955-03-21',
@@ -28,7 +28,7 @@ const politiciansArray = [
   {
     politician_name: 'Dilma Rousseff',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/4/4c/Dilma_Rousseff_-_foto_oficial_2011-01-09.jpg',
+      'https://miro.medium.com/v2/resize:fit:2350/1*EC93W0kfUaraQhmccZ7-5w.jpeg',
     corruption_scandals_amount: 1,
     political_ideology: PoliticianPoliticalIdeology.FAR_LEFT,
     date_of_birth: '1947-12-14',
@@ -37,7 +37,7 @@ const politiciansArray = [
   {
     politician_name: 'Aécio Neves',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/1/14/A%C3%A9cio_Neves_2015.jpg',
+      'https://www.camara.leg.br/internet/deputado/bandep/74646.jpgmaior.jpg',
     corruption_scandals_amount: 3,
     political_ideology: PoliticianPoliticalIdeology.LEFT,
     date_of_birth: '1960-03-10',
@@ -46,7 +46,7 @@ const politiciansArray = [
   {
     politician_name: 'Ciro Gomes',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/e/e6/Ciro_Gomes_em_2018.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/e/e2/Ciro_Gomes_%28cropped%29.jpg',
     corruption_scandals_amount: 0,
     political_ideology: PoliticianPoliticalIdeology.LEFT,
     date_of_birth: '1957-11-06',
@@ -55,7 +55,7 @@ const politiciansArray = [
   {
     politician_name: 'Sérgio Moro',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/f/f1/S%C3%A9rgio_Moro_em_outubro_de_2018.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/2/26/Senadores_da_57%C2%AA_Legislatura_%2852689302414%29.jpg',
     corruption_scandals_amount: 0,
     political_ideology: PoliticianPoliticalIdeology.RIGHT,
     date_of_birth: '1972-08-01',
@@ -64,7 +64,7 @@ const politiciansArray = [
   {
     politician_name: 'Fernando Haddad',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/6/65/Fernando_Haddad_em_18_de_julho_de_2018.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/2/26/Senadores_da_57%C2%AA_Legislatura_%2852689302414%29.jpg',
     corruption_scandals_amount: 0,
     political_ideology: PoliticianPoliticalIdeology.FAR_LEFT,
     date_of_birth: '1963-01-25',
@@ -73,7 +73,7 @@ const politiciansArray = [
   {
     politician_name: 'Marina Silva',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/1/18/Marina_Silva_at_2010_Presidential_debate_05.jpg',
+      'https://www.camara.leg.br/internet/deputado/bandep/220637.jpgmaior.jpg',
     corruption_scandals_amount: 0,
     political_ideology: PoliticianPoliticalIdeology.FAR_LEFT,
     date_of_birth: '1958-02-08',
@@ -82,7 +82,7 @@ const politiciansArray = [
   {
     politician_name: 'Geraldo Alckmin',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/2/28/Governador_Geraldo_Alckmin.jpg',
+      'https://www.camara.leg.br/internet/deputado/bandep/220637.jpgmaior.jpg',
     corruption_scandals_amount: 1,
     political_ideology: PoliticianPoliticalIdeology.LEFT,
     date_of_birth: '1952-11-07',
@@ -91,7 +91,7 @@ const politiciansArray = [
   {
     politician_name: 'Michel Temer',
     politician_photo_url:
-      'https://upload.wikimedia.org/wikipedia/commons/4/4c/PR-Michel_Temer-2017.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/2/26/Michel_Temer_%28foto_oficial%29.jpg',
     corruption_scandals_amount: 2,
     political_ideology: PoliticianPoliticalIdeology.LEFT,
     date_of_birth: '1940-09-23',

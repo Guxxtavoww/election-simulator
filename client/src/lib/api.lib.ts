@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
-import { logOut, session } from './session.lib';
+import { session } from './session.lib';
+import { redirect } from 'next/navigation';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -28,8 +29,6 @@ api.interceptors.response.use(
   async (err: AxiosError) => {
     if (err.response?.status === 401) {
       memoryAccessToken = undefined;
-
-      return await logOut();
     }
 
     const message = String((err.response?.data as any)?.message || 'Error');

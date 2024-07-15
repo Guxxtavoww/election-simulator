@@ -9,4 +9,7 @@ export const paginatePoliticiansSchema =
 
 export type PaginatePoliticiansType = z.infer<typeof paginatePoliticiansSchema>;
 
-export class PaginatePoliticiansDTO extends ListPoliticiansDTO {}
+export class PaginatePoliticiansDTO extends ListPoliticiansDTO {
+  readonly page: number;
+  readonly limit: number;
+}

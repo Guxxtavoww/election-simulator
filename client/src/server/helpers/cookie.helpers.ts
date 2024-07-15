@@ -9,7 +9,9 @@ const cookiesNames = ['access_token', 'user'] as const;
 
 export type CookieNames = (typeof cookiesNames)[number];
 
-export async function getCookie(cookieName: CookieNames) {
+export async function getCookie(
+  cookieName: CookieNames
+): Promise<Maybe<string>> {
   const cookieFn = cookies();
 
   return cookieFn.get(cookieName)?.value;

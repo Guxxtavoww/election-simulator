@@ -5,6 +5,9 @@ const nextConfig = {
   experimental: {
     taint: true,
   },
+  images: {
+    domains: ['upload.wikimedia.org'],
+  },
 };
 
 // Check if the environment is development

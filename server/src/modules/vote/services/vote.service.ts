@@ -19,7 +19,7 @@ import {
   voterAlias,
 } from '../entities/vote.entity';
 import { voteRepository } from '../repositories/vote.repository';
-import { PaginateVotesPayload } from '../dtos/paginate-votes.dto';
+import type { PaginateVotesPayload } from '../dtos/paginate-votes.dto';
 
 @Injectable()
 export class VoteService {

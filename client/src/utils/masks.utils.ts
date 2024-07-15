@@ -1,4 +1,4 @@
-export function phoneNumberMask(value: string) {
+export function phoneNumberMask(value: string): string {
   return value
     .replace(/\D/g, '')
     .replace(/(\d{2})(\d)/, '($1) $2')
@@ -6,7 +6,7 @@ export function phoneNumberMask(value: string) {
     .replace(/(-\d{4})\d+?$/, '$1');
 }
 
-export function cpfNumberMask(value: string) {
+export function cpfNumberMask(value: string): string {
   return value
     .replace(/\D/g, '')
     .replace(/(\d{3})(\d)/, '$1.$2')

@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from '../ui/select';
 import { ScrollArea } from '../ui/scroll-area';
+import { Label } from '../ui/label';
 
 export function PaginationControls({
   currentPage,
@@ -76,9 +77,12 @@ export function PaginationControls({
         defaultValue={itemsPerPage.toString()}
         onValueChange={(value) => setSearchParam('limit', value)}
       >
-        <SelectTrigger className="max-w-xs">
-          <SelectValue placeholder="Limite Por Página" />
-        </SelectTrigger>
+        <div className="flex items-center gap-2">
+          <Label className="min-w-fit">Por Página</Label>
+          <SelectTrigger className="max-w-xs">
+            <SelectValue placeholder="Limite Por Página" />
+          </SelectTrigger>
+        </div>
         <SelectContent>
           <ScrollArea className="h-52">
             <SelectItem value="5">5</SelectItem>

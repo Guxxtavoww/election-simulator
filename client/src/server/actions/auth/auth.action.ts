@@ -16,7 +16,7 @@ export async function auth<T extends boolean>(
   payload: T extends false
     ? LoginPayload
     : Omit<RegisterPayload, 'confirmed_password'>
-) {
+): Promise<void> {
   try {
     const { access_token, user } = await api
       .post<LoginAndRegisterResponse>(

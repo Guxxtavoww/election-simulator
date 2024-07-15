@@ -8,7 +8,7 @@ import {
 const pageSchema = optionalPaginationParamSchema.default(1);
 const limitSchema = optionalPaginationParamSchema.default(10);
 
-export function createPaginationSchema<T extends ZodRawShape>(fields?: T) {
+export function createPaginationSchema<T extends ZodRawShape>(fields: T) {
   const paginationSchema = z.object({
     page: pageSchema,
     limit: limitSchema,
@@ -21,7 +21,7 @@ export function createPaginationSchema<T extends ZodRawShape>(fields?: T) {
 }
 
 export function createPaginationSchemaWithoutOrderBy<T extends ZodRawShape>(
-  fields?: T
+  fields: T
 ) {
   const paginationSchema = z.object({
     page: pageSchema,

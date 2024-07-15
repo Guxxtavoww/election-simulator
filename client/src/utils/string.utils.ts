@@ -4,7 +4,7 @@ export function capitalizeFirstLetter(word: string): string {
   return firstLetter?.toLocaleUpperCase().concat(...rest);
 }
 
-export function capitalize(string: string) {
+export function capitalize(string: string): string {
   const words = string.trim().split(' ');
 
   if (words.length === 1) return capitalizeFirstLetter(words[0]!);
@@ -14,7 +14,7 @@ export function capitalize(string: string) {
   return mappedText.join(' ');
 }
 
-export function limitChars(str: string, limit = 100) {
+export function limitChars(str: string, limit = 100): string {
   if (str.length < limit) return str;
 
   return str.substring(0, limit).concat('...');

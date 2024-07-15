@@ -13,7 +13,7 @@ type Breakpoints = {
 };
 
 export function useBreakpoints(): Breakpoints {
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState<boolean>(false);
 
   const breakpoints: Breakpoints = {
     isXs: useMediaQuery('(max-width: 640px)'),

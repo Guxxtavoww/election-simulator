@@ -1,6 +1,6 @@
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 
-export function getExpirationDateFromToken(token: string) {
+export function getExpirationDateFromToken(token: string): Date {
   const decodedToken = jwt.decode(token) as JwtPayload;
 
   if (decodedToken && decodedToken.exp) {

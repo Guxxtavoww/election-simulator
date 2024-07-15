@@ -15,7 +15,7 @@ export interface AuthContextProps {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export function AuthProvider({ children }: WithChildren) {
+export function AuthProvider({ children }: WithChildren): JSX.Element {
   const { data, isLoading } = useQuery({
     queryKey: ['get-session'],
     queryFn: async () => session<true>(true),
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: WithChildren) {
   );
 }
 
-export function useAuth() {
+export function useAuth(): AuthContextProps {
   const context = useContext(AuthContext);
 
   if (context === undefined) {

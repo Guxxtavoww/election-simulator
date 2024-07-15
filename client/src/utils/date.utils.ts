@@ -22,7 +22,9 @@ export const formatToDate = (
   const datefyedValue = new Date(currentDate);
 
   if (format === 'date') {
-    datefyedValue.setDate(datefyedValue.getDate() + 1);
+    if (!datefyedValue.getHours()) {
+      datefyedValue.setDate(datefyedValue.getDate() + 1);
+    }
   }
 
   return dateFormatter.format(datefyedValue);

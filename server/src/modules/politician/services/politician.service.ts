@@ -68,6 +68,8 @@ export class PoliticianService {
     politicians: Politician[],
     logged_in_user_id: string,
   ) {
+    if (!politicians.length) return [];
+
     const politicianIds = politicians.map((politician) => politician.id);
 
     const votedPoliticians = await this.voteService

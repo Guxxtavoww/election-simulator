@@ -6,6 +6,7 @@ import { NotFoundError } from 'src/lib/http-exceptions/errors/types/not-found-er
 import { BadRequestError } from 'src/lib/http-exceptions/errors/types/bad-request-error';
 
 import { baseSelect, Politician } from '../entities/politician.entity';
+import type { ListPoliticiansType } from '../dtos/list-politicians.dto';
 import { politicianRepository } from '../repositories/politician.repository';
 import type { CreatePoliticianPayload } from '../dtos/create-politician.dto';
 import type { UpdatePoliticianPayload } from '../dtos/update-politician.dto';
@@ -25,18 +26,13 @@ export class PoliticianService {
       .select(baseSelect);
   }
 
-  async paginatePoliticians(
-    {
-      limit,
-      page,
-      order_by_date_of_birth,
-      political_ideology,
-      politician_name,
-      order_by_most_votes,
-      politician_type,
-    }: PaginatePoliticiansType,
-    logged_in_user_id: string,
-  ) {
+  private handleFilters({
+    order_by_date_of_birth,
+    order_by_most_votes,
+    political_ideology,
+    politician_name,
+    politician_type,
+  }: Omit<PaginatePoliticiansType, 'limit' | 'page'>) {
     const queryBuilder = this.createPoliticianQueryBuilder()
       .where(
         political_ideology
@@ -65,34 +61,65 @@ export class PoliticianService {
     if (order_by_most_votes)
       queryBuilder.orderBy('politician.votes_amount', order_by_most_votes);
 
-    const paginationResult =
-      await this.paginationService.paginateWithQueryBuilder(queryBuilder, {
-        limit,
-        page,
-      });
+    return queryBuilder;
+  }
 
-    if (!paginationResult.items.length) return paginationResult;
-
-    const { items, meta } = paginationResult;
-
-    const politicians_ids = items.map((politician) => politician.id);
+  private async addVotedByCurrentUser(
+    politicians: Politician[],
+    logged_in_user_id: string,
+  ) {
+    const politicianIds = politicians.map((politician) => politician.id);
 
     const votedPoliticians = await this.voteService
       .createVoteQueryBuilder(true)
-      .where('vote.politician_id IN (:...politicians_ids)', { politicians_ids })
+      .where('vote.politician_id IN (:...politicianIds)', { politicianIds })
       .andWhere('vote.voter_id = :logged_in_user_id', { logged_in_user_id })
-      .take(politicians_ids.length)
+      .take(politicianIds.length)
       .getMany();
 
     const politiciansSet = new Set(
       votedPoliticians.map((votedPolitician) => votedPolitician.politician.id),
     );
 
+    return politicians.map((politician) => ({
+      ...politician,
+      voted_by_current_user: politiciansSet.has(politician.id),
+    }));
+  }
+
+  async listPoliticians(
+    payload: ListPoliticiansType,
+    logged_in_user_id: string,
+  ) {
+    const politicians = await this.handleFilters(payload).getMany();
+
+    return this.addVotedByCurrentUser(politicians, logged_in_user_id);
+  }
+
+  async paginatePoliticians(
+    { limit, page, ...filters }: PaginatePoliticiansType,
+    logged_in_user_id: string,
+  ) {
+    const paginationResult =
+      await this.paginationService.paginateWithQueryBuilder(
+        this.handleFilters(filters),
+        {
+          limit,
+          page,
+        },
+      );
+
+    if (!paginationResult.items.length) return paginationResult;
+
+    const { items, meta } = paginationResult;
+
+    const itemsWithVotes = await this.addVotedByCurrentUser(
+      items,
+      logged_in_user_id,
+    );
+
     return {
-      items: items.map((item) => ({
-        ...item,
-        voted_by_current_user: politiciansSet.has(item.id),
-      })),
+      items: itemsWithVotes,
       meta,
     };
   }

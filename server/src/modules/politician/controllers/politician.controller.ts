@@ -15,6 +15,7 @@ import { ApiPaginationQuery } from 'src/shared/decorators/api-pagination-query.d
 import { DataBaseInterceptorDecorator } from 'src/shared/decorators/database-interceptor.decorator';
 
 import { politicianTypes } from '../enums/politician-type.enum';
+import { ListPoliticiansDTO } from '../dtos/list-politicians.dto';
 import { PoliticianService } from '../services/politician.service';
 import { CreatePoliticianDTO } from '../dtos/create-politician.dto';
 import { UpdatePoliticianDTO } from '../dtos/update-politician.dto';
@@ -33,6 +34,14 @@ export class PoliticianController {
     @DecodedToken() decoded_token: DecodedTokenType,
   ) {
     return this.politicianService.paginatePoliticians(querys, decoded_token.id);
+  }
+
+  @Get('list')
+  list(
+    @Query() querys: ListPoliticiansDTO,
+    @DecodedToken() decoded_token: DecodedTokenType,
+  ) {
+    return this.politicianService.listPoliticians(querys, decoded_token.id);
   }
 
   @Get('political-ideologies')

@@ -13,13 +13,13 @@ import { BadRequestError } from 'src/lib/http-exceptions/errors/types/bad-reques
 import {
   alias,
   baseSelect,
-  perfomaticSelect,
   politicianAlias,
   Vote,
   voterAlias,
 } from '../entities/vote.entity';
 import { voteRepository } from '../repositories/vote.repository';
 import type { PaginateVotesPayload } from '../dtos/paginate-votes.dto';
+import { PoliticianType } from 'src/modules/politician/enums/politician-type.enum';
 
 @Injectable()
 export class VoteService {
@@ -29,15 +29,23 @@ export class VoteService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  createVoteQueryBuilder(usePerfomaticSelect = false) {
-    if (usePerfomaticSelect)
-      return voteRepository.createQueryBuilder(alias).select(perfomaticSelect);
-
+  createVoteQueryBuilder() {
     return voteRepository
       .createQueryBuilder(alias)
       .leftJoinAndSelect(`${alias}.voter`, voterAlias)
       .leftJoinAndSelect(`${alias}.politician`, politicianAlias)
       .select(baseSelect);
+  }
+
+  createPerfomaticQueryBuilder() {
+    return voteRepository
+      .createQueryBuilder(alias)
+      .select([
+        'vote.id',
+        'vote.voter_id',
+        'vote.politician_id',
+        'vote.politician_type',
+      ]);
   }
 
   async paginateVotes({
@@ -47,6 +55,7 @@ export class VoteService {
     order_by_updated_at,
     politician_id,
     voter_id,
+    politician_type,
   }: PaginateVotesPayload) {
     const queryBuilder = this.createVoteQueryBuilder()
       .where(politician_id ? `${politicianAlias}.id = :politician_id` : '1=1', {
@@ -54,7 +63,13 @@ export class VoteService {
       })
       .andWhere(voter_id ? `${voterAlias}.id = :voter_id` : '1=1', {
         voter_id,
-      });
+      })
+      .andWhere(
+        politician_type
+          ? `${politicianAlias}.politician_type = :politician_type`
+          : '1=1',
+        { politician_type },
+      );
 
     if (order_by_created_at)
       queryBuilder.orderBy('vote.created_at', order_by_created_at);
@@ -79,30 +94,42 @@ export class VoteService {
   }
 
   async getVoteByVoterAndPolitician(voter_id: string, politician_id: string) {
-    const vote = await voteRepository
-      .createQueryBuilder('v')
-      .leftJoinAndSelect('v.politician', 'politician')
-      .select(['v.voter_id', 'politician.id', 'politician.votes_amount', 'v.id'])
-      .where('v.voter_id = :voter_id', { voter_id })
+    const vote = await this.createPerfomaticQueryBuilder()
+      .where('vote.voter_id = :voter_id', { voter_id })
       .andWhere('politician.id = :politician_id', { politician_id })
       .getOne();
 
     return vote;
   }
 
+  async getVotesByPoliticianType(
+    voter_id: string,
+    politician_type: PoliticianType,
+  ) {
+    const voteByType = await this.createPerfomaticQueryBuilder()
+      .where('vote.politician_type = :politician_type', {
+        politician_type,
+      })
+      .andWhere('vote.voter_id = : voter_id', { voter_id })
+      .getOne();
+
+    return voteByType;
+  }
+
   async vote(logged_in_user_id: string, politician_id: string) {
-    const wasVoted = await this.getVoteByVoterAndPolitician(
-      logged_in_user_id,
-      politician_id,
-    );
-
-    if (wasVoted) throw new BadRequestError('Voce já votou nesse político');
-
     const politician =
       await this.politicianService.getPoliticianById(politician_id);
 
+    const wasVoted = await this.getVotesByPoliticianType(
+      logged_in_user_id,
+      politician.politician_type,
+    );
+
+    if (wasVoted)
+      throw new BadRequestError('Voce já votou nesse político, ou no seu tipo');
+
     const savedVote = await voteRepository.save(
-      Vote.create(logged_in_user_id, politician.id),
+      Vote.create(logged_in_user_id, politician.id, politician.politician_type),
     );
 
     await this.politicianService.updateVotesAmount(politician, 'increment');

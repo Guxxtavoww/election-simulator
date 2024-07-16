@@ -6,6 +6,8 @@ import {
   TableIndex,
 } from 'typeorm';
 
+import { politicianTypes } from 'src/modules/politician/enums/politician-type.enum';
+
 import { baseColumns } from '../entities/base-columns';
 
 export class Votes1720618527564 implements MigrationInterface {
@@ -25,6 +27,11 @@ export class Votes1720618527564 implements MigrationInterface {
             type: 'uuid',
             isNullable: false,
           },
+          {
+            name: 'politician_type',
+            type: 'enum',
+            enum: politicianTypes,
+          },
         ],
       }),
       true,
@@ -43,6 +50,14 @@ export class Votes1720618527564 implements MigrationInterface {
       new TableIndex({
         name: 'IDX_VOTES_POLITICIAN_ID',
         columnNames: ['politician_id'],
+      }),
+    );
+
+    await queryRunner.createIndex(
+      'votes',
+      new TableIndex({
+        name: 'IDX_POLITICIAN_TYPE',
+        columnNames: ['politician_type'],
       }),
     );
 
@@ -83,8 +98,9 @@ export class Votes1720618527564 implements MigrationInterface {
     await queryRunner.dropForeignKey('votes', politicianForeignKey);
 
     await queryRunner.dropIndex('votes', 'IDX_VOTES_VOTER_ID');
+    await queryRunner.dropIndex('votes', 'IDX_POLITICIAN_TYPE');
     await queryRunner.dropIndex('votes', 'IDX_VOTES_POLITICIAN_ID');
-
+    
     await queryRunner.dropTable('votes');
   }
 }

@@ -30,24 +30,28 @@ export async function session<ForceNoUndefined extends boolean = false>(
     getCookie('access_token'),
   ]);
 
-  const userResponse = user ? userSchema.parse(JSON.parse(user)) : undefined;
+  try {
+    const userResponse = user ? userSchema.parse(JSON.parse(user)) : undefined;
 
-  const baseAuthObject = { access_token };
+    const baseAuthObject = { access_token };
 
-  const result = userResponse
-    ? {
-        ...baseAuthObject,
-        user: userResponse,
-      }
-    : {
-        ...baseAuthObject,
-        user: undefined,
-      };
+    const result = userResponse
+      ? {
+          ...baseAuthObject,
+          user: userResponse,
+        }
+      : {
+          ...baseAuthObject,
+          user: undefined,
+        };
 
-  cache.data = result;
-  cache.expiry = now + CACHE_DURATION;
+    cache.data = result;
+    cache.expiry = now + CACHE_DURATION;
 
-  return result as any;
+    return result as any;
+  } catch {
+    return { user: null, access_token: null } as any;
+  }
 }
 
 export async function logOut() {

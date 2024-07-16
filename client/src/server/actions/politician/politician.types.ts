@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { z } from 'zod';
 
 import {
@@ -56,7 +57,7 @@ const base_fields = {
   politician_name: optionalStringSchemaToLowerCase,
   political_ideology: optionalIdeologySchema,
   order_by_date_of_birth: optionalOrderParamSchema,
-  order_by_most_votes: optionalOrderParamSchema,
+  order_by_most_votes: optionalOrderParamSchema.default('DESC'),
   politician_type: optionalPoliticianTypeSchema,
 } as const;
 

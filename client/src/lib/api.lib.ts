@@ -1,7 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
 import { session } from './session.lib';
-import { redirect } from 'next/navigation';
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,

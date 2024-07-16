@@ -15,9 +15,9 @@ import type { PaginatePoliticiansType } from '../dtos/paginate-politicians.dto';
 @Injectable()
 export class PoliticianService {
   constructor(
-    private readonly paginationService: PaginationService,
     @Inject(forwardRef(() => VoteService))
     private readonly voteService: VoteService,
+    private readonly paginationService: PaginationService,
   ) {}
 
   private createPoliticianQueryBuilder() {
@@ -67,10 +67,12 @@ export class PoliticianService {
   private async addVotedByCurrentUser(
     politicians: Politician[],
     logged_in_user_id: string,
-  ) {
+  ): Promise<(Politician & { voted_by_current_user: boolean })[]> {
     if (!politicians.length) return [];
 
-    const politicianIds = politicians.map((politician) => politician.id);
+    const politicianIds = new Array(
+      ...new Set(politicians.map((politician) => politician.id)),
+    );
 
     const votedPoliticians = await this.voteService
       .createVoteQueryBuilder(true)
@@ -80,7 +82,7 @@ export class PoliticianService {
       .getMany();
 
     const politiciansSet = new Set(
-      votedPoliticians.map((votedPolitician) => votedPolitician.politician.id),
+      votedPoliticians.map((votedPolitician) => votedPolitician.politician_id),
     );
 
     return politicians.map((politician) => ({

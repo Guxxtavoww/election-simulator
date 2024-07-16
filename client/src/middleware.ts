@@ -16,11 +16,13 @@ export async function middleware(request: NextRequest) {
 
   const hasSession = !!(access_token || user);
 
-  if (isPublicRoute && hasSession)
+  if (isPublicRoute && hasSession) {
     return NextResponse.redirect(new URL(protectedRoutes[0], request.url));
+  }
 
-  if (isProtectedRoute && !hasSession)
+  if (isProtectedRoute && !hasSession) {
     return NextResponse.redirect(new URL(publicRoutes[0], request.url));
+  }
 
   return NextResponse.next();
 }

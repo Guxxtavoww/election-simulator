@@ -81,9 +81,10 @@ export class VoteService {
   async getVoteByVoterAndPolitician(voter_id: string, politician_id: string) {
     const vote = await voteRepository
       .createQueryBuilder('v')
-      .select(['v.voter_id', 'v.politician_id'])
+      .leftJoinAndSelect('v.politician', 'politician')
+      .select(['v.voter_id', 'politician.id', 'politician.votes_amount', 'v.id'])
       .where('v.voter_id = :voter_id', { voter_id })
-      .andWhere('v.politician_id = :politician_id', { politician_id })
+      .andWhere('politician.id = :politician_id', { politician_id })
       .getOne();
 
     return vote;
@@ -109,10 +110,15 @@ export class VoteService {
     return savedVote;
   }
 
-  async deleteVote(id: string, logged_in_user_id: string) {
-    const voteToDelete = await this.getVoteById(id);
+  async deleteVote(politician_id: string, logged_in_user_id: string) {
+    const voteToDelete = await this.getVoteByVoterAndPolitician(
+      logged_in_user_id,
+      politician_id,
+    );
 
-    if (voteToDelete.voter.id !== logged_in_user_id) {
+    if (!voteToDelete) return;
+
+    if (voteToDelete.voter_id !== logged_in_user_id) {
       throw new ForbiddenException(
         'Voce não pode deletar um voto que não é seu',
       );

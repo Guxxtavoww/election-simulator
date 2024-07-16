@@ -25,11 +25,11 @@ export class VoteController {
     return this.voteService.vote(decoded_token.id, politician_id);
   }
 
-  @Delete(':id')
+  @Delete(':politician_id')
   deleteVote(
-    @UuidParam('id') id: string,
+    @UuidParam('politician_id') politician_id: string,
     @DecodedToken() decoded_token: DecodedTokenType,
   ) {
-    return this.voteService.deleteVote(id, decoded_token.id);
+    return this.voteService.deleteVote(politician_id, decoded_token.id);
   }
 }

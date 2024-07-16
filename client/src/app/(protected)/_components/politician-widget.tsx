@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useMemo } from 'react';
 import { Printer } from 'lucide-react';
 
 import {
@@ -17,7 +18,6 @@ import { Loader } from '@/components/tools/loader';
 import { unVote, vote } from '@/server/actions/vote/vote.actions';
 import { useMutationWithToast } from '@/hooks/use-mutation-with-toast.hook';
 import type { Politician } from '@/server/actions/politician/politician.types';
-import { useMemo } from 'react';
 
 function calculateAge(date_of_birth: string) {
   const birthDate = new Date(date_of_birth);

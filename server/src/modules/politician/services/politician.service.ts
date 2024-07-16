@@ -75,7 +75,7 @@ export class PoliticianService {
     );
 
     const votedPoliticians = await this.voteService
-      .createVoteQueryBuilder(true)
+      .createPerfomaticQueryBuilder()
       .where('vote.politician_id IN (:...politicianIds)', { politicianIds })
       .andWhere('vote.voter_id = :logged_in_user_id', { logged_in_user_id })
       .take(politicianIds.length)

@@ -29,8 +29,8 @@ export function useMutationWithToast<
   TVariables = void,
   TContext = unknown
 >({
-  toastCustomSuccessMessage = 'Operation completed successfully!',
-  toastCustomError = 'An error occurred during the operation.',
+  toastCustomSuccessMessage = 'Sucesso!',
+  toastCustomError = 'Um erro inesperado ocorreu durante essa operação',
   onSuccess,
   onError,
   retryLimit = 6,
@@ -80,7 +80,7 @@ export function useMutationWithToast<
             altText="Try again"
             onClick={() => mutationResult.mutate(variables)}
           >
-            Try again
+            Tente Novamente
           </ToastAction>
         ),
       });

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { Printer } from 'lucide-react';
 
 import {
   Card,
@@ -10,11 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Icon } from '@/components/tools/icon';
 import { Button } from '@/components/ui/button';
 import { Loader } from '@/components/tools/loader';
 import { unVote, vote } from '@/server/actions/vote/vote.actions';
 import { useMutationWithToast } from '@/hooks/use-mutation-with-toast.hook';
 import type { Politician } from '@/server/actions/politician/politician.types';
+import { useMemo } from 'react';
 
 function calculateAge(date_of_birth: string) {
   const birthDate = new Date(date_of_birth);
@@ -42,13 +45,18 @@ export function PoliticianWidget({
   voted_by_current_user,
   votes_amount,
 }: Politician) {
+  const isVoted = useMemo(
+    () => voted_by_current_user === true,
+    [voted_by_current_user]
+  );
+
   const { mutateAsync, isPending, disabled } = useMutationWithToast({
     mutationKey: ['vote'],
-    mutationFn: () => (voted_by_current_user ? unVote(id) : vote(id)),
+    mutationFn: () => (isVoted ? unVote(id) : vote(id)),
   });
 
   return (
-    <Card className="mb-3 last:mb-0">
+    <Card>
       <CardHeader>
         <CardTitle>{politician_name}</CardTitle>
         <CardDescription>
@@ -61,22 +69,29 @@ export function PoliticianWidget({
           alt={politician_name}
           width={100}
           height={1}
-          className="w-full"
+          className="max-w-sm h-[150px]"
         />
-        <CardDescription className="capitalize">{politician_type}</CardDescription>
+        <CardDescription className="capitalize">
+          {politician_type}
+        </CardDescription>
         <CardDescription>Quantidade de votos: {votes_amount}</CardDescription>
         <CardDescription>
           Escandalos de corrupção: {corruption_scandals_amount}
         </CardDescription>
       </CardContent>
-      <CardFooter>
-        <Button onClick={() => mutateAsync()} disabled={isPending || disabled}>
+      <CardFooter className="justify-end">
+        <Button
+          onClick={() => mutateAsync()}
+          variant={isVoted ? 'destructive' : 'outline'}
+          disabled={isPending || disabled}
+        >
           {isPending ? (
             <Loader />
-          ) : voted_by_current_user ? (
-            'Remover Voto'
           ) : (
-            'Votar'
+            <>
+              <Icon icon={Printer} size="sm" />{' '}
+              {voted_by_current_user ? 'Remover Voto' : 'Votar'}
+            </>
           )}
         </Button>
       </CardFooter>

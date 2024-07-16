@@ -16,9 +16,11 @@ export default async function Page({ searchParams }: ServerComponentPageProps) {
     <div className="p-2 space-y-3 flex flex-col justify-between h-svh">
       <h1>Politicos</h1>
       <ScrollArea className="flex-[1]">
-        {politicians.map((politician, idx) => (
-          <PoliticianWidget {...politician} key={idx} />
-        ))}
+        <div className="grid grid-cols-4 gap-3">
+          {politicians.map((politician, idx) => (
+            <PoliticianWidget {...politician} key={idx} />
+          ))}
+        </div>
       </ScrollArea>
     </div>
   );

@@ -56,7 +56,7 @@ export class Votes1720618527564 implements MigrationInterface {
     await queryRunner.createIndex(
       'votes',
       new TableIndex({
-        name: 'IDX_POLITICIAN_TYPE',
+        name: 'IDX_VOTES_POLITICIAN_TYPE',
         columnNames: ['politician_type'],
       }),
     );
@@ -98,7 +98,7 @@ export class Votes1720618527564 implements MigrationInterface {
     await queryRunner.dropForeignKey('votes', politicianForeignKey);
 
     await queryRunner.dropIndex('votes', 'IDX_VOTES_VOTER_ID');
-    await queryRunner.dropIndex('votes', 'IDX_POLITICIAN_TYPE');
+    await queryRunner.dropIndex('votes', 'IDX_VOTES_POLITICIAN_TYPE');
     await queryRunner.dropIndex('votes', 'IDX_VOTES_POLITICIAN_ID');
     
     await queryRunner.dropTable('votes');

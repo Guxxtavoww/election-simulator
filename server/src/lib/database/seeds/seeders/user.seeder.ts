@@ -19,7 +19,7 @@ export default class UserSeeder implements Seeder {
       user_email: 'user@example.com',
       hashed_password: await createHashedPassword('password123'),
       user_cpf_number: '111.111.111-11',
-      phone_number: '(11) 98945-9239',
+      phone_number: '(11) 11111-1111',
       date_of_birth: '2003-12-09',
     });
 

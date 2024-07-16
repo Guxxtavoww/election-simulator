@@ -30,7 +30,9 @@ api.interceptors.response.use(
       memoryAccessToken = undefined;
     }
 
-    const message = String((err.response?.data as any)?.message || 'Error');
+    const response = err.response?.data as any;
+
+    const message = String(response?.message || response?.detail || 'Error');
 
     throw new Error(message);
   }

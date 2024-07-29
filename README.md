@@ -70,13 +70,13 @@ Make sure you have the following installed on your machine:
 1. Set up your environment variables. Create a `.env` file in the `server` directory and add the following:
 
    ```env
-   DATABASE_ROOT_PASSWORD="Gge7RzT0%9C"
+   DATABASE_ROOT_PASSWORD=randon-password
    DATABASE_DATABASE_NAME="election_simulator-db"
    DB_PORT=5432
    DATABASE_HOST="localhost"
    DB_USER="root"
 
-   JWT_SECRET="h2s9JpUeQpMv3sRw5u8x/A?D(G+KbPeShVmYq3t6w9z$C&F)J@NcRfUjXn2r5u8x"
+   JWT_SECRET=secret
    JWT_EXPIRES_IN=1d
 
    PORT=5000
@@ -119,7 +119,7 @@ The client should now be running at `http://localhost:3000`.
 
 ## API Documentation
 
-API documentation is available through Swagger. Once the server is running, navigate to `http://localhost:5000/api` to explore the API endpoints and their usage.
+API documentation is available through Swagger. Once the server is running, navigate to `http://localhost:5000/server#/` to explore the API endpoints and their usage.
 
 ## Contributing
 

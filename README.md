@@ -1,5 +1,3 @@
-Sure, here is an updated README file including the provided environment variables for the server and client:
-
 # Election Simulator App
 
 Welcome to the Election Simulator App! This project is a full-stack application designed to simulate an election process, allowing users to create, manage, and participate in elections. The backend server is built with NestJS, TypeORM, Swagger, and Zod, while the frontend client is developed using Next.js, ShadCN, and server actions.
